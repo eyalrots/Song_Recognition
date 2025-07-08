@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/eyalrothschild/Documents/Song_Recognition/code_files/build",
+  "command": "/usr/bin/clang  -I/opt/homebrew/Cellar/fftw/3.3.10_2/include -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wall -Wextra -g -o CMakeFiles/main.dir/main.c.o -c /Users/eyalrothschild/Documents/Song_Recognition/code_files/main.c",
+  "file": "/Users/eyalrothschild/Documents/Song_Recognition/code_files/main.c",
+  "output": "CMakeFiles/main.dir/main.c.o"
+},
+{
+  "directory": "/Users/eyalrothschild/Documents/Song_Recognition/code_files/build",
+  "command": "/usr/bin/clang  -I/opt/homebrew/Cellar/fftw/3.3.10_2/include -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wall -Wextra -g -o CMakeFiles/main.dir/func.c.o -c /Users/eyalrothschild/Documents/Song_Recognition/code_files/func.c",
+  "file": "/Users/eyalrothschild/Documents/Song_Recognition/code_files/func.c",
+  "output": "CMakeFiles/main.dir/func.c.o"
+}
+]
