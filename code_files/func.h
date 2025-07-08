@@ -7,7 +7,6 @@
 #define SUB_WINDOW_LENGTH   200
 #define STEP_LENGTH         100
 #define NUM_OF_PERIODOGRAMS 16
-#define NUM_POINTS          8192
 
 typedef struct wav_header {
     // RIFF Chunk Descriptor

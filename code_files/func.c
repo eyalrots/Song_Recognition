@@ -144,10 +144,17 @@ int hamming(double* sub_window, int sub_size) {
     }
 
     for (i=0; i < sub_size; i++) {
-        hamming_value = 0.54 - 0.46 * cos(2 * M_PI * i / (NUM_POINTS-1));
+        hamming_value = 0.54 - 0.46 * cos(2 * M_PI * i / (sub_size-1));
         sub_window[i] *= hamming_value;
     }
 
+    return 0;
+}
+
+int create_periodogram(double* sub_window, int sub_size) {
+    // receiving a window after hamming calculation
+    // now it needs to got through FFT
+    // output is a periodogram -> power of FFT result
     return 0;
 }
 
@@ -161,14 +168,17 @@ int generate_linekey(double* window_data, int sigma_size, int sub_size, linekey_
     if (!window_data || !sub_size || !sigma_size) {
         return 1;
     }
-
+    // sub_size is the number of "points" (samples) in the FFT calculation (or hamming for that matter)
     step_size = ((sigma_size - sub_size) / NUM_OF_PERIODOGRAMS);
     periodograms = (double**)calloc(NUM_OF_PERIODOGRAMS, sizeof(double*));
+    sub_window = window_data; // start position of the first sub window
 
     // Creation of Periodograms
     for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
-
+        sub_window += (i*step_size);
+        hamming(sub_window, sub_size);
     }
+
     // cleanup
     for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
         free(periodograms[i]);
@@ -187,7 +197,7 @@ int analyze_data(double* audio_data, long data_size, wav_header_t header, int so
         return 1;
     }
 
-    ms_size = (header.sample_rate * header.num_channels) / 1000;
+    ms_size = (header.sample_rate * header.num_channels) / 1000; // represent the number of samples in a single ms
     sigma_size = SIGMA_WINDOW_LENGTH * ms_size;
     sub_size = SUB_WINDOW_LENGTH * ms_size;
     step_size = STEP_LENGTH * ms_size;
