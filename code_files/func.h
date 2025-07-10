@@ -7,6 +7,12 @@
 #define SUB_WINDOW_LENGTH   200
 #define STEP_LENGTH         100
 #define NUM_OF_PERIODOGRAMS 16
+// Mel filter bank values
+#define MIN_FREQ            300
+#define MAX_FREQ            8000
+// linekey values
+#define LINEKEY_SIZE        64
+#define THRESHOLD_BIAS      3
 
 typedef struct wav_header {
     // RIFF Chunk Descriptor
@@ -26,9 +32,10 @@ typedef struct wav_header {
 } wav_header_t;
 
 typedef struct linekey {
-    char* binary_values;
+    int* binary_values;
     int** position_arr;
     int pos_arr_len;
+    int new_pos;
 } linekey_t;
 
 int read_file(const char* input_file, unsigned char** out, long* size, wav_header_t* header);
