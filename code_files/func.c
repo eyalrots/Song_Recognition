@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -166,15 +167,15 @@ int fft_to_mel(double* fft_values, double* mel_points, double delta_f) {
     max_mel = 2595 * log10(1 + ((double)MAX_FREQ / 700));
 
     // create points on mel scale spaced evenly
-    jump = (max_mel - min_mel) / LINEKEY_SIZE + 1;
+    jump = (max_mel - min_mel) / LINEKEY_SIZE;
     mel_points[0] = min_mel;
     for (i = 1; i < LINEKEY_SIZE+1; i++) {
         mel_points[i] = mel_points[i-1] + jump;
     }
 
     // check if space of points on mel scale was correct
-    if (mel_points[LINEKEY_SIZE] != max_mel) {
-        fprintf(stderr, "Error: wrong input to mel scale - end_of_scale != max_mel.\n");
+    if (mel_points[LINEKEY_SIZE] <= max_mel-jump) {
+        fprintf(stderr, "Error: wrong input to mel scale - end_of_scale != max_mel.\nActual value is: %lf while max is: %lf and the jump is: %d", mel_points[LINEKEY_SIZE], max_mel, jump);
         return 1;
     }
 
@@ -221,6 +222,7 @@ int calculate_psd(double** mel_filter_results, double* out_psd) {
             per_sum += mel_filter_results[j][i];
         }
         out_psd[i] = 10 * log10(per_sum);
+        out_psd[i] = isinf(out_psd[i]) ? 1 : out_psd[i];
     }
 
     return 0;
@@ -232,8 +234,8 @@ int threshold_function(double* psd, double* out_func) {
     double ln_sum_for_b_numerator = 0;
     double denominator = 0;
     int i = 0;
-    double a_numerator = 0;
-    double b_numerator = 0;
+    long double a_numerator = 0;
+    long double b_numerator = 0;
     double a = 0;
     double b = 0;
     
@@ -259,7 +261,9 @@ int threshold_function(double* psd, double* out_func) {
     a_numerator = 0;
     for (i = 0; i <LINEKEY_SIZE; i++) {
         a_numerator += log(psd[i]) * (sum_sqr - i);
+        printf("a(t_n) numerator += [ln(%lf)=%lf] * (%lf - %d) = %Lf\n", psd[i], log(psd[i]), sum_sqr, i, a_numerator);
     }
+    printf("a(t_n) numerator = %Lf\n", a_numerator);
 
     // calculate ln sum for b numerator
     ln_sum_for_b_numerator = 0;
@@ -276,6 +280,8 @@ int threshold_function(double* psd, double* out_func) {
     // calculate a(t_n) and b(t_n)
     a = a_numerator / denominator;
     b = b_numerator / denominator;
+    printf("a(t_n) = %Lf / %lf = %lf\n", a_numerator, denominator, a);
+    printf("b(t_n) = %Lf / %lf = %lf\n", b_numerator, denominator, b);
 
     // calculate out function
     for (i = 0; i < LINEKEY_SIZE; i++) {
@@ -363,9 +369,13 @@ int generate_linekey(double* window_data, int sigma_size, int sub_size, int samp
     threshold_function(psd, threshold);
 
     // generating the linekey
+    printf("Generating linekey.\n");
     for (i = 0; i < LINEKEY_SIZE; i++) {
+        out_linekey->binary_values = (int*)calloc(LINEKEY_SIZE, sizeof(int));
+        printf("linekey[%d] = (%lf > %lf)\n", i, psd[i], threshold[i]);
         out_linekey->binary_values[i] = (psd[i] > threshold[i]);
     }
+    printf("Done generating linekey.\n");
 
 out:// cleanup
     for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
@@ -395,7 +405,8 @@ int analyze_data(double* audio_data, long data_size, wav_header_t header, int so
     int i = 0;
     int cur_linekey = 0;
 
-    if (!audio_data || !data_size || unique_linekeys) {
+    if (!audio_data || !data_size || !unique_linekeys) {
+        fprintf(stderr, "Error: one of the input values is empty.\n");
         return_val = 1;
         goto out;
     }
@@ -423,6 +434,7 @@ int analyze_data(double* audio_data, long data_size, wav_header_t header, int so
             *unique_len += 50;
         }
         generate_linekey(cur_window, sigma_size, sub_size, header.sample_rate, &unique_linekeys[cur_linekey]);
+        printf("Generated linekey number %d\n", cur_linekey);
         // insert current data to position array (song index and position in said song)
         // check if there is an error with the array
         if (!unique_linekeys[cur_linekey].position_arr && unique_linekeys[cur_linekey].pos_arr_len) {
@@ -453,3 +465,14 @@ out:
     return return_val;
 }
 
+uint64_t convert_linekey_to_number(int* linekey) {
+    uint64_t result = 0;
+    int i = 0;
+
+    for (i = 0; i < LINEKEY_SIZE; i++) {
+        printf("bit[%d] = %d\n", i, linekey[i]);
+        result += linekey[i] * pow(2, i);
+    }
+
+    return result;
+}

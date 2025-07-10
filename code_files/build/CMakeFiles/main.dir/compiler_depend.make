@@ -176,12 +176,17 @@ CMakeFiles/main.dir/main.c.o: /Users/eyalrothschild/Documents/Song_Recognition/c
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/signal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/sys/wait.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/__stddef_max_align_t.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdatomic.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdint.h \
   /Users/eyalrothschild/Documents/Song_Recognition/code_files/func.h \
   /Users/eyalrothschild/Documents/Song_Recognition/code_files/main.h
 
 
 /Users/eyalrothschild/Documents/Song_Recognition/code_files/main.h:
+
+/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdatomic.h:
 
 /opt/homebrew/Cellar/fftw/3.3.10_2/include/fftw3.h:
 

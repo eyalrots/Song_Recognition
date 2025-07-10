@@ -40,4 +40,6 @@ typedef struct linekey {
 
 int read_file(const char* input_file, unsigned char** out, long* size, wav_header_t* header);
 int convert_to_samples(unsigned char* data_buffer, double** sample_data, long* size, int bits_per_sample);
+int analyze_data(double* audio_data, long data_size, wav_header_t header, int song_idx, linekey_t* unique_linekeys, int* unique_len);
+uint64_t convert_linekey_to_number(int* linekey);
 #endif
