@@ -9,7 +9,7 @@
 #define NUM_OF_PERIODOGRAMS 16
 // Mel filter bank values
 #define MIN_FREQ            300
-#define MAX_FREQ            8000
+#define MAX_FREQ            20000
 // linekey values
 #define LINEKEY_SIZE        64
 #define THRESHOLD_BIAS      3

@@ -156,15 +156,15 @@ int create_periodogram(double* sub_window, int sub_size, int per_size, double* i
 int fft_to_mel(double* fft_values, double* mel_points, double delta_f) {
     double min_mel = 0;
     double max_mel = 0;
-    int jump = 0;
+    double jump = 0;
     int i = 0;
 
     if (!fft_values || !mel_points) {
         return 1;
     }
     // map Hz to Mel
-    min_mel = 2595 * log10(1 + ((double)MIN_FREQ / 700));
-    max_mel = 2595 * log10(1 + ((double)MAX_FREQ / 700));
+    min_mel = 1127.01048 * log10(1 + ((double)MIN_FREQ / 700));
+    max_mel = 1127.01048 * log10(1 + ((double)MAX_FREQ / 700));
 
     // create points on mel scale spaced evenly
     jump = (max_mel - min_mel) / LINEKEY_SIZE;
@@ -175,18 +175,19 @@ int fft_to_mel(double* fft_values, double* mel_points, double delta_f) {
 
     // check if space of points on mel scale was correct
     if (mel_points[LINEKEY_SIZE] <= max_mel-jump) {
-        fprintf(stderr, "Error: wrong input to mel scale - end_of_scale != max_mel.\nActual value is: %lf while max is: %lf and the jump is: %d", mel_points[LINEKEY_SIZE], max_mel, jump);
+        fprintf(stderr, "Error: wrong input to mel scale - end_of_scale != max_mel.\nActual value is: %lf while max is: %lf and the jump is: %lf\n", mel_points[LINEKEY_SIZE], max_mel, jump);
         return 1;
     }
 
     // convert back to Hz
     for (i = 0; i < LINEKEY_SIZE+1; i++) {
-        mel_points[i] = 700 * pow(10,((double)mel_points[i] / 2595) - 1);
+        mel_points[i] = 700 * pow(10,((double)mel_points[i] / 1127.01048) - 1);
     }
 
     // round to FFT values
     for (i = 0; i < LINEKEY_SIZE+1; i++) {
         mel_points[i] = (int)floor(mel_points[i] / delta_f);
+        printf("Mel point number %d is at bin number %lf\n", i, mel_points[i]);
     }
 
     return 0;
@@ -203,6 +204,8 @@ int pass_periodogram_through_mel_filter(double* periodogram, double* result, dou
     for (m = start; m < end; m++) {
         *result += periodogram[m];
     }
+
+    //*result = *result / (end - start);
 
     return 0;
 }
@@ -231,7 +234,9 @@ int calculate_psd(double** mel_filter_results, double* out_psd) {
 int threshold_function(double* psd, double* out_func) {
     double sqr_sum = 0;
     double sum_sqr = 0;
-    double ln_sum_for_b_numerator = 0;
+    double ln_sum = 0;
+    double ln_sum_x_i = 0;
+    double sum_i = 0;
     double denominator = 0;
     int i = 0;
     long double a_numerator = 0;
@@ -244,37 +249,46 @@ int threshold_function(double* psd, double* out_func) {
     }
 
     // calculate squared sum
-    for (i = 1; i < LINEKEY_SIZE+1; i++) {
-        sqr_sum += i-1;
+    for (i = 0; i < LINEKEY_SIZE; i++) {
+        sqr_sum += i;
     }
     sqr_sum *= sqr_sum; // squaring the sum
 
     // calculate sum of squared values
-    for (int i = 1; i < LINEKEY_SIZE + 1; i++) {
-        sum_sqr += (i-1) * (i-1);
+    for (int i = 0; i < LINEKEY_SIZE; i++) {
+        sum_sqr += i * i;
     }
 
     // calculate numerator
     denominator = LINEKEY_SIZE * sum_sqr - sqr_sum;
 
-    // calculate a numerator
-    a_numerator = 0;
-    for (i = 0; i <LINEKEY_SIZE; i++) {
-        a_numerator += log(psd[i]) * (sum_sqr - i);
-        printf("a(t_n) numerator += [ln(%lf)=%lf] * (%lf - %d) = %Lf\n", psd[i], log(psd[i]), sum_sqr, i, a_numerator);
-    }
-    printf("a(t_n) numerator = %Lf\n", a_numerator);
-
-    // calculate ln sum for b numerator
-    ln_sum_for_b_numerator = 0;
+    // calculate ln sum
+    ln_sum = 0;
     for (i = 0; i < LINEKEY_SIZE; i++) {
-        ln_sum_for_b_numerator += log(psd[i]);
+        ln_sum += log(psd[i]);
     }
 
-    // calculate b numerator
+    // calculate ln*i sum
+    ln_sum_x_i = 0;
+    for (i = 0; i < LINEKEY_SIZE; i++) {
+        ln_sum_x_i += log(psd[i]) * i;
+    }
+
+    // sum i
+    sum_i = 0;
+    for (i = 0; i < LINEKEY_SIZE; i++) {
+        sum_i += i;
+    }
+
+    // calculate numerators
+    // a_numerator = (ln_sum * sum_sqr) - ln_sum_x_i;
+    // b_numerator = (LINEKEY_SIZE * ln_sum_x_i) - (sum_i * ln_sum);
+    // printf("b numerator = %d * %lf - %lf * %lf = %Lf\n", LINEKEY_SIZE, ln_sum_x_i, sum_i, ln_sum, b_numerator);
+    a_numerator = 0;
     b_numerator = 0;
     for (i = 0; i < LINEKEY_SIZE; i++) {
-        b_numerator += i * (LINEKEY_SIZE * log(psd[i]) - ln_sum_for_b_numerator);
+        a_numerator += log(psd[i]) * (sum_sqr - i);
+        b_numerator += i * (LINEKEY_SIZE * log(psd[i]) - ln_sum);
     }
 
     // calculate a(t_n) and b(t_n)
