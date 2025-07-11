@@ -1,0 +1,1 @@
+/usr/bin/cc  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/song_recognition.dir/main.c.o CMakeFiles/song_recognition.dir/src/func.c.o -o song_recognition   -L/opt/homebrew/Cellar/fftw/3.3.10_2/lib  -Wl,-rpath,/opt/homebrew/Cellar/fftw/3.3.10_2/lib -lfftw3 -lm
