@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/orshtrauch/Workspace/Song_Recognition/build",
+  "command": "/usr/bin/cc  -I/Users/orshtrauch/Workspace/Song_Recognition/include -I/opt/homebrew/Cellar/fftw/3.3.10_2/include -std=gnu99 -arch arm64 -Wall -Werror -Wextra -g -o CMakeFiles/song_recognition.dir/main.c.o -c /Users/orshtrauch/Workspace/Song_Recognition/main.c",
+  "file": "/Users/orshtrauch/Workspace/Song_Recognition/main.c",
+  "output": "CMakeFiles/song_recognition.dir/main.c.o"
+},
+{
+  "directory": "/Users/orshtrauch/Workspace/Song_Recognition/build",
+  "command": "/usr/bin/cc  -I/Users/orshtrauch/Workspace/Song_Recognition/include -I/opt/homebrew/Cellar/fftw/3.3.10_2/include -std=gnu99 -arch arm64 -Wall -Werror -Wextra -g -o CMakeFiles/song_recognition.dir/src/func.c.o -c /Users/orshtrauch/Workspace/Song_Recognition/src/func.c",
+  "file": "/Users/orshtrauch/Workspace/Song_Recognition/src/func.c",
+  "output": "CMakeFiles/song_recognition.dir/src/func.c.o"
+}
+]

@@ -1,0 +1,3 @@
+/Users/orshtrauch/Workspace/Song_Recognition/build/CMakeFiles/song_recognition.dir
+/Users/orshtrauch/Workspace/Song_Recognition/build/CMakeFiles/edit_cache.dir
+/Users/orshtrauch/Workspace/Song_Recognition/build/CMakeFiles/rebuild_cache.dir

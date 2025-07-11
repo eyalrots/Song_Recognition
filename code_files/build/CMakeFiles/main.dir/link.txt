@@ -1,1 +1,0 @@
-/usr/bin/clang -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/main.dir/main.c.o CMakeFiles/main.dir/func.c.o -o main   -L/opt/homebrew/Cellar/fftw/3.3.10_2/lib  -Wl,-rpath,/opt/homebrew/Cellar/fftw/3.3.10_2/lib -lfftw3 -lm

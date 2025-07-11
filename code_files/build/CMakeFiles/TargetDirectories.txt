@@ -1,3 +1,0 @@
-/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/main.dir
-/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/edit_cache.dir
-/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/rebuild_cache.dir
