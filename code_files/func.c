@@ -163,8 +163,8 @@ int fft_to_mel(double* fft_values, double* mel_points, double delta_f) {
         return 1;
     }
     // map Hz to Mel
-    min_mel = 1127.01048 * log10(1 + ((double)MIN_FREQ / 700));
-    max_mel = 1127.01048 * log10(1 + ((double)MAX_FREQ / 700));
+    min_mel = 1127.01048 * log(1 + ((double)MIN_FREQ / 700));
+    max_mel = 1127.01048 * log(1 + ((double)MAX_FREQ / 700));
 
     // create points on mel scale spaced evenly
     jump = (max_mel - min_mel) / LINEKEY_SIZE;
@@ -181,13 +181,42 @@ int fft_to_mel(double* fft_values, double* mel_points, double delta_f) {
 
     // convert back to Hz
     for (i = 0; i < LINEKEY_SIZE+1; i++) {
-        mel_points[i] = 700 * pow(10,((double)mel_points[i] / 1127.01048) - 1);
+        mel_points[i] = 700 * exp((mel_points[i] / 1127.01048) - 1);
     }
 
     // round to FFT values
     for (i = 0; i < LINEKEY_SIZE+1; i++) {
+        printf("Mel value: %lf :: ", mel_points[i]);
         mel_points[i] = (int)floor(mel_points[i] / delta_f);
         printf("Mel point number %d is at bin number %lf\n", i, mel_points[i]);
+    }
+
+    return 0;
+}
+
+double triangular_filter(double f, double start, double peak, double end) {
+    if (f <= start || f >= end) {
+        return 0;
+    }
+
+    if (f >= start && f < peak) {
+        return (f - start) / (peak - start);
+    } else if (f >= peak && f <end) {
+        return (end - f) / (end - peak);
+    }
+
+    return 0;
+}
+
+int pass_periodogram_through_triangular_filter(double* periodogram, double* result, int size, double start, double peak, double end) {
+    int i = 0;
+    
+    if (!periodogram || !result) {
+        return 1;
+    }
+    *result = 0;
+    for (i = 0; i < size; i++) {
+        *result += triangular_filter(periodogram[i], start, peak, end);
     }
 
     return 0;
@@ -281,15 +310,15 @@ int threshold_function(double* psd, double* out_func) {
     }
 
     // calculate numerators
-    // a_numerator = (ln_sum * sum_sqr) - ln_sum_x_i;
-    // b_numerator = (LINEKEY_SIZE * ln_sum_x_i) - (sum_i * ln_sum);
+    a_numerator = (ln_sum * sum_sqr) - (sum_i * ln_sum_x_i);
+    b_numerator = (LINEKEY_SIZE * ln_sum_x_i) - (sum_i * ln_sum);
     // printf("b numerator = %d * %lf - %lf * %lf = %Lf\n", LINEKEY_SIZE, ln_sum_x_i, sum_i, ln_sum, b_numerator);
-    a_numerator = 0;
-    b_numerator = 0;
-    for (i = 0; i < LINEKEY_SIZE; i++) {
-        a_numerator += log(psd[i]) * (sum_sqr - i);
-        b_numerator += i * (LINEKEY_SIZE * log(psd[i]) - ln_sum);
-    }
+    // a_numerator = 0;
+    // b_numerator = 0;
+    // for (i = 0; i < LINEKEY_SIZE; i++) {
+    //     a_numerator += log(psd[i]) * (sum_sqr - i);
+    //     b_numerator += i * (LINEKEY_SIZE * log(psd[i]) - ln_sum);
+    // }
 
     // calculate a(t_n) and b(t_n)
     a = a_numerator / denominator;
@@ -356,21 +385,23 @@ int generate_linekey(double* window_data, int sigma_size, int sub_size, int samp
     }
 
     // calculate FFT values that are present in the PSD
-    delta_f = (double)sample_rate / sub_size;
+    delta_f = (double)sample_rate / per_size;
     fft_values = (double*) calloc(per_size, sizeof(double));
     for (i = 0; i < per_size; i++) {
         fft_values[i] = i * delta_f;
     }
+    printf("last frequency: %lf\n", fft_values[per_size-1]);
 
     // Mel filter bank calculation
     mel_points = (double *) calloc(LINEKEY_SIZE+1, sizeof(double));
     mel_filter_results = (double**) calloc(NUM_OF_PERIODOGRAMS, sizeof(double*));
-    fft_to_mel(fft_values, mel_points, delta_f);
+    fft_to_mel(fft_values, mel_points, delta_f); // MOVE TO OUTER FUNCTION!!!
     // calculate mel results for each periodogram
     for (i = 0; i < NUM_OF_PERIODOGRAMS; i++) {
         mel_filter_results[i] = (double*) calloc(LINEKEY_SIZE, sizeof(double));
         for (j = 1; j < LINEKEY_SIZE+1; j++) {
             pass_periodogram_through_mel_filter(periodograms[i], &mel_filter_results[i][j-1], mel_points[j-1], mel_points[j]); // eq. (3) in paper
+            //pass_periodogram_through_triangular_filter(periodograms[i], &mel_filter_results[i][j-1], per_size, mel_points[j-1], mel_points[j], mel_points[j+1]);
         }
     }
 
