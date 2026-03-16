@@ -1,8 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/func.c.o"
-  "CMakeFiles/main.dir/func.c.o.d"
-  "CMakeFiles/main.dir/main.c.o"
-  "CMakeFiles/main.dir/main.c.o.d"
+  "CMakeFiles/main.dir/link.d"
+  "CMakeFiles/main.dir/src/func.c.o"
+  "CMakeFiles/main.dir/src/func.c.o.d"
+  "CMakeFiles/main.dir/src/main.c.o"
+  "CMakeFiles/main.dir/src/main.c.o.d"
   "main"
   "main.pdb"
 )

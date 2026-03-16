@@ -3,6 +3,6 @@
 
 #include "func.h"
 
-#define PATH_TO_FILE "../../sampled_audio/output.wav"
+#define PATH_TO_FILE "../../sampled_audio/test_mono.wav"
 
 #endif

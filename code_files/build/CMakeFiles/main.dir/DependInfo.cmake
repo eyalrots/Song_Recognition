@@ -8,8 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/eyalrothschild/Documents/Song_Recognition/code_files/func.c" "CMakeFiles/main.dir/func.c.o" "gcc" "CMakeFiles/main.dir/func.c.o.d"
-  "/Users/eyalrothschild/Documents/Song_Recognition/code_files/main.c" "CMakeFiles/main.dir/main.c.o" "gcc" "CMakeFiles/main.dir/main.c.o.d"
+  "/home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/func.c" "CMakeFiles/main.dir/src/func.c.o" "gcc" "CMakeFiles/main.dir/src/func.c.o.d"
+  "/home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/main.c" "CMakeFiles/main.dir/src/main.c.o" "gcc" "CMakeFiles/main.dir/src/main.c.o.d"
+  "" "main" "gcc" "CMakeFiles/main.dir/link.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -4,20 +4,20 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
       - "CMakeLists.txt:5 (project)"
     message: |
-      The system is: Darwin - 23.6.0 - arm64
+      The system is: Linux - 6.18.16-200.fc43.x86_64 - x86_64
   -
     kind: "message-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
       - "CMakeLists.txt:5 (project)"
     message: |
       Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-      Compiler: /usr/bin/clang 
+      Compiler: /usr/bin/cc 
       Build flags: 
       Id flags:  
       
@@ -27,182 +27,244 @@ events:
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
       
-      The C compiler identification is AppleClang, found in:
-        /Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/3.29.5/CompilerIdC/a.out
+      The C compiler identification is GNU, found in:
+        /home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/3.31.10/CompilerIdC/a.out
       
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:67 (try_compile)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:5 (project)"
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V"
-      binary: "/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V"
+      source: "/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr"
+      binary: "/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
       CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_OSX_ARCHITECTURES: ""
-      CMAKE_OSX_DEPLOYMENT_TARGET: ""
-      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk"
     buildResult:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V'
+        Change Dir: '/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr'
         
-        Run Build Command(s): /opt/homebrew/Cellar/cmake/3.29.5/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3403d/fast
-        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_3403d.dir/build.make CMakeFiles/cmTC_3403d.dir/build
-        Building C object CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o
-        /usr/bin/clang   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk   -v -Wl,-v -MD -MT CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeCCompilerABI.c
-        Apple clang version 15.0.0 (clang-1500.3.9.4)
-        Target: arm64-apple-darwin23.6.0
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5c858/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_5c858.dir/build.make CMakeFiles/cmTC_5c858.dir/build
+        gmake[1]: Entering directory '/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr'
+        Building C object CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -o CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-redhat-linux
+        Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortran,objc,obj-c++,ada,go,d,m2,cobol,lto --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugzilla.redhat.com/ --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --enable-libstdcxx-backtrace --with-libstdcxx-zoneinfo=/usr/share/zoneinfo --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-15.2.1-build/gcc-15.2.1-20260123/obj-x86_64-redhat-linux/isl-install --enable-offload-targets=nvptx-none,amdgcn-amdhsa --enable-offload-defaulted --without-cuda-driver --enable-gnu-indirect-function --enable-cet --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux --with-build-config=bootstrap-lto --enable-link-serialization=1 --disable-libssp
         Thread model: posix
-        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
-        clang: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
-         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx14.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=14.4 -fvisibility-inlines-hidden-static-local-var -target-cpu apple-m1 -target-feature +v8.5a -target-feature +crc -target-feature +lse -target-feature +rdm -target-feature +crypto -target-feature +dotprod -target-feature +fp-armv8 -target-feature +neon -target-feature +fp16fml -target-feature +ras -target-feature +rcpc -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-feature +sm4 -target-feature +sha3 -target-feature +sha2 -target-feature +aes -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1053.12 -v -fcoverage-compilation-dir=/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0 -dependency-file CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -mllvm -disable-aligned-alloc-awareness=1 -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeCCompilerABI.c
-        clang -cc1 version 15.0.0 (clang-1500.3.9.4) default target arm64-apple-darwin23.6.0
-        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/local/include"
-        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/Library/Frameworks"
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260123 (Red Hat 15.2.1-7) (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/'
+         /usr/libexec/gcc/x86_64-redhat-linux/15/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_5c858.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/ccvivQHA.s
+        GNU C23 (GCC) version 15.2.1 20260123 (Red Hat 15.2.1-7) (x86_64-redhat-linux)
+        	compiled by GNU C version 15.2.1 20260123 (Red Hat 15.2.1-7), GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.3.1, isl version isl-0.24-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-redhat-linux/15/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-redhat-linux/15/../../../../x86_64-redhat-linux/include"
         #include "..." search starts here:
         #include <...> search starts here:
-         /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include
-         /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include
-         /Library/Developer/CommandLineTools/usr/include
-         /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks (framework directory)
+         /usr/lib/gcc/x86_64-redhat-linux/15/include
+         /usr/local/include
+         /usr/include
         End of search list.
-        Linking C executable cmTC_3403d
-        /opt/homebrew/Cellar/cmake/3.29.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3403d.dir/link.txt --verbose=1
-        /usr/bin/clang  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -o cmTC_3403d
-        Apple clang version 15.0.0 (clang-1500.3.9.4)
-        Target: arm64-apple-darwin23.6.0
+        Compiler executable checksum: 26be2a77f083688cd617fb87abbd954c
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/'
+         as -v --64 -o CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o /tmp/ccvivQHA.s
+        GNU assembler version 2.45.1 (x86_64-redhat-linux) using BFD version version 2.45.1-4.fc43
+        COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_5c858
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5c858.dir/link.txt --verbose=1
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-redhat-linux
+        Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortran,objc,obj-c++,ada,go,d,m2,cobol,lto --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugzilla.redhat.com/ --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --enable-libstdcxx-backtrace --with-libstdcxx-zoneinfo=/usr/share/zoneinfo --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-15.2.1-build/gcc-15.2.1-20260123/obj-x86_64-redhat-linux/isl-install --enable-offload-targets=nvptx-none,amdgcn-amdhsa --enable-offload-defaulted --without-cuda-driver --enable-gnu-indirect-function --enable-cet --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux --with-build-config=bootstrap-lto --enable-link-serialization=1 --disable-libssp
         Thread model: posix
-        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
-         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 14.0.0 14.4 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -o cmTC_3403d -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.osx.a
-        @(#)PROGRAM:ld PROJECT:ld-1053.12
-        BUILD 15:45:29 Feb  3 2024
-        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
-        will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k armv7m armv7em
-        LTO support using: LLVM version 15.0.0 (static support for 29, runtime is 29)
-        TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.3.2.2)
-        Library search paths:
-        	/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib
-        	/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/swift
-        Framework search paths:
-        	/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260123 (Red Hat 15.2.1-7) (GCC) 
+        COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5c858' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_5c858.'
+         /usr/libexec/gcc/x86_64-redhat-linux/15/collect2 -plugin /usr/libexec/gcc/x86_64-redhat-linux/15/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper -plugin-opt=-fresolution=/tmp/cctu7BVp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_5c858 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/15 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o
+        collect2 version 15.2.1 20260123 (Red Hat 15.2.1-7)
+        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-redhat-linux/15/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper -plugin-opt=-fresolution=/tmp/cctu7BVp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_5c858 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/15 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o
+        GNU ld version 2.45.1-4.fc43
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5c858' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_5c858.'
+        /usr/bin/cc  -v -Wl,-v CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -o cmTC_5c858
+        gmake[1]: Leaving directory '/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr'
         
       exitCode: 0
   -
     kind: "message-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:137 (message)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:5 (project)"
     message: |
       Parsed C implicit include dir info: rv=done
         found start of include info
         found start of implicit include info
-          add: [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include]
-          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include]
-          add: [/Library/Developer/CommandLineTools/usr/include]
+          add: [/usr/lib/gcc/x86_64-redhat-linux/15/include]
+          add: [/usr/local/include]
+          add: [/usr/include]
         end of search list found
-        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include]
-        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include]
-        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
-        implicit include dirs: [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include;/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+        collapse include dir [/usr/lib/gcc/x86_64-redhat-linux/15/include] ==> [/usr/lib/gcc/x86_64-redhat-linux/15/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-redhat-linux/15/include;/usr/local/include;/usr/include]
       
       
   -
     kind: "message-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:173 (message)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:5 (project)"
     message: |
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
-        ignore line: [Change Dir: '/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V']
+        ignore line: [Change Dir: '/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/homebrew/Cellar/cmake/3.29.5/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3403d/fast]
-        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_3403d.dir/build.make CMakeFiles/cmTC_3403d.dir/build]
-        ignore line: [Building C object CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o]
-        ignore line: [/usr/bin/clang   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk   -v -Wl -v -MD -MT CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeCCompilerABI.c]
-        ignore line: [Apple clang version 15.0.0 (clang-1500.3.9.4)]
-        ignore line: [Target: arm64-apple-darwin23.6.0]
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5c858/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_5c858.dir/build.make CMakeFiles/cmTC_5c858.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/eyalrots/Documents/Projects/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-4t0tJr']
+        ignore line: [Building C object CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-redhat-linux]
+        ignore line: [Configured with: ../configure --enable-bootstrap --enable-languages=c c++ fortran objc obj-c++ ada go d m2 cobol lto --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugzilla.redhat.com/ --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --enable-libstdcxx-backtrace --with-libstdcxx-zoneinfo=/usr/share/zoneinfo --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-15.2.1-build/gcc-15.2.1-20260123/obj-x86_64-redhat-linux/isl-install --enable-offload-targets=nvptx-none amdgcn-amdhsa --enable-offload-defaulted --without-cuda-driver --enable-gnu-indirect-function --enable-cet --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux --with-build-config=bootstrap-lto --enable-link-serialization=1 --disable-libssp]
         ignore line: [Thread model: posix]
-        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
-        ignore line: [clang: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
-        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx14.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=14.4 -fvisibility-inlines-hidden-static-local-var -target-cpu apple-m1 -target-feature +v8.5a -target-feature +crc -target-feature +lse -target-feature +rdm -target-feature +crypto -target-feature +dotprod -target-feature +fp-armv8 -target-feature +neon -target-feature +fp16fml -target-feature +ras -target-feature +rcpc -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-feature +sm4 -target-feature +sha3 -target-feature +sha2 -target-feature +aes -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1053.12 -v -fcoverage-compilation-dir=/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0 -dependency-file CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/eyalrothschild/Documents/Song_Recognition/code_files/build/CMakeFiles/CMakeScratch/TryCompile-f9643V -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -mllvm -disable-aligned-alloc-awareness=1 -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeCCompilerABI.c]
-        ignore line: [clang -cc1 version 15.0.0 (clang-1500.3.9.4) default target arm64-apple-darwin23.6.0]
-        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/local/include"]
-        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/Library/Frameworks"]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260123 (Red Hat 15.2.1-7) (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/']
+        ignore line: [ /usr/libexec/gcc/x86_64-redhat-linux/15/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_5c858.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/ccvivQHA.s]
+        ignore line: [GNU C23 (GCC) version 15.2.1 20260123 (Red Hat 15.2.1-7) (x86_64-redhat-linux)]
+        ignore line: [	compiled by GNU C version 15.2.1 20260123 (Red Hat 15.2.1-7)  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.3.1  isl version isl-0.24-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-redhat-linux/15/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-redhat-linux/15/../../../../x86_64-redhat-linux/include"]
         ignore line: [#include "..." search starts here:]
         ignore line: [#include <...> search starts here:]
-        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include]
-        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include]
-        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
-        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [ /usr/lib/gcc/x86_64-redhat-linux/15/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include]
         ignore line: [End of search list.]
-        ignore line: [Linking C executable cmTC_3403d]
-        ignore line: [/opt/homebrew/Cellar/cmake/3.29.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3403d.dir/link.txt --verbose=1]
-        ignore line: [/usr/bin/clang  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wl -search_paths_first -Wl -headerpad_max_install_names  -v -Wl -v CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -o cmTC_3403d]
-        ignore line: [Apple clang version 15.0.0 (clang-1500.3.9.4)]
-        ignore line: [Target: arm64-apple-darwin23.6.0]
+        ignore line: [Compiler executable checksum: 26be2a77f083688cd617fb87abbd954c]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o /tmp/ccvivQHA.s]
+        ignore line: [GNU assembler version 2.45.1 (x86_64-redhat-linux) using BFD version version 2.45.1-4.fc43]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_5c858]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5c858.dir/link.txt --verbose=1]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-redhat-linux]
+        ignore line: [Configured with: ../configure --enable-bootstrap --enable-languages=c c++ fortran objc obj-c++ ada go d m2 cobol lto --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugzilla.redhat.com/ --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --enable-libstdcxx-backtrace --with-libstdcxx-zoneinfo=/usr/share/zoneinfo --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array --with-isl=/builddir/build/BUILD/gcc-15.2.1-build/gcc-15.2.1-20260123/obj-x86_64-redhat-linux/isl-install --enable-offload-targets=nvptx-none amdgcn-amdhsa --enable-offload-defaulted --without-cuda-driver --enable-gnu-indirect-function --enable-cet --with-tune=generic --with-arch_32=i686 --build=x86_64-redhat-linux --with-build-config=bootstrap-lto --enable-link-serialization=1 --disable-libssp]
         ignore line: [Thread model: posix]
-        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
-        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 14.0.0 14.4 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -o cmTC_3403d -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.osx.a]
-          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
-          arg [-demangle] ==> ignore
-          arg [-lto_library] ==> ignore, skip following value
-          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
-          arg [-dynamic] ==> ignore
-          arg [-arch] ==> ignore
-          arg [arm64] ==> ignore
-          arg [-platform_version] ==> ignore
-          arg [macos] ==> ignore
-          arg [14.0.0] ==> ignore
-          arg [14.4] ==> ignore
-          arg [-syslibroot] ==> ignore
-          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk] ==> ignore
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260123 (Red Hat 15.2.1-7) (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/15/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/15/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/15/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5c858' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_5c858.']
+        link line: [ /usr/libexec/gcc/x86_64-redhat-linux/15/collect2 -plugin /usr/libexec/gcc/x86_64-redhat-linux/15/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper -plugin-opt=-fresolution=/tmp/cctu7BVp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_5c858 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/15 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o]
+          arg [/usr/libexec/gcc/x86_64-redhat-linux/15/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/libexec/gcc/x86_64-redhat-linux/15/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/cctu7BVp.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--no-add-needed] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_3403d] ==> ignore
-          arg [-search_paths_first] ==> ignore
-          arg [-headerpad_max_install_names] ==> ignore
+          arg [cmTC_5c858] ==> ignore
+          arg [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o] ==> obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o]
+          arg [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o] ==> obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o]
+          arg [/usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o] ==> obj [/usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o]
+          arg [-L/usr/lib/gcc/x86_64-redhat-linux/15] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/15]
+          arg [-L/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64]
+          arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+          arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+          arg [-L/usr/lib/gcc/x86_64-redhat-linux/15/../../..] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/15/../../..]
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
           arg [-v] ==> ignore
-          arg [CMakeFiles/cmTC_3403d.dir/CMakeCCompilerABI.c.o] ==> ignore
-          arg [-lSystem] ==> lib [System]
-          arg [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.osx.a]
-        linker tool for 'C': /Library/Developer/CommandLineTools/usr/bin/ld
-        Library search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/swift]
-        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks]
-        remove lib [System]
-        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.osx.a]
-        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib]
-        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/swift]
-        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks]
-        implicit libs: []
-        implicit objs: []
-        implicit dirs: [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/swift]
-        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/System/Library/Frameworks]
+          arg [CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-redhat-linux/15/crtend.o] ==> obj [/usr/lib/gcc/x86_64-redhat-linux/15/crtend.o]
+          arg [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o] ==> obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o]
+        ignore line: [collect2 version 15.2.1 20260123 (Red Hat 15.2.1-7)]
+        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-redhat-linux/15/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/15/lto-wrapper -plugin-opt=-fresolution=/tmp/cctu7BVp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_5c858 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/15 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/15/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_5c858.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o]
+        linker tool for 'C': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crt1.o] ==> [/usr/lib64/crt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o] ==> [/usr/lib64/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crtn.o] ==> [/usr/lib64/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-redhat-linux/15] ==> [/usr/lib/gcc/x86_64-redhat-linux/15]
+        collapse library dir [/usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64] ==> [/usr/lib64]
+        collapse library dir [/lib/../lib64] ==> [/lib64]
+        collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+        collapse library dir [/usr/lib/gcc/x86_64-redhat-linux/15/../../..] ==> [/usr/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o;/usr/lib/gcc/x86_64-redhat-linux/15/crtend.o;/usr/lib64/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-redhat-linux/15;/usr/lib64;/lib64;/usr/lib;/lib]
+        implicit fwks: []
       
       
   -
     kind: "message-v1"
     backtrace:
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:210 (cmake_determine_linker_id)"
-      - "/opt/homebrew/Cellar/cmake/3.29.5/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:5 (project)"
     message: |
-      Running the C compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
-      @(#)PROGRAM:ld PROJECT:ld-1053.12
-      BUILD 15:45:29 Feb  3 2024
-      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
-      will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k armv7m armv7em
-      LTO support using: LLVM version 15.0.0 (static support for 29, runtime is 29)
-      TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.3.2.2)
+      Running the C compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld version 2.45.1-4.fc43
 ...
