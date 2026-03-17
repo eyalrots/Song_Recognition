@@ -1,7 +1,7 @@
-CMakeFiles/main.dir/src/func.c.o: \
- /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/func.c \
+CMakeFiles/main.dir/src/database.c.o: \
+ /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/database.c \
  /usr/include/stdc-predef.h \
- /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/../include/func.h \
+ /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/../include/database.h \
  /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
@@ -38,10 +38,4 @@ CMakeFiles/main.dir/src/func.c.o: \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-uintn.h /usr/include/bits/stdint-least.h \
- /usr/include/inttypes.h /usr/include/math.h \
- /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
- /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
- /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
- /usr/include/bits/mathcalls-helper-functions.h \
- /usr/include/bits/mathcalls.h /usr/include/fftw3.h \
- /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/../include/database.h
+ /usr/include/inttypes.h

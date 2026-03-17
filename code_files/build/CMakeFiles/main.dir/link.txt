@@ -1,1 +1,1 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/main.dir/link.d CMakeFiles/main.dir/src/main.c.o CMakeFiles/main.dir/src/func.c.o -o main  -lfftw3 -lm
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/main.dir/link.d CMakeFiles/main.dir/src/main.c.o CMakeFiles/main.dir/src/func.c.o CMakeFiles/main.dir/src/database.c.o -o main  -lfftw3 -lm

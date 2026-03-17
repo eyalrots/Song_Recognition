@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/main.dir/link.d"
+  "CMakeFiles/main.dir/src/database.c.o"
+  "CMakeFiles/main.dir/src/database.c.o.d"
   "CMakeFiles/main.dir/src/func.c.o"
   "CMakeFiles/main.dir/src/func.c.o.d"
   "CMakeFiles/main.dir/src/main.c.o"

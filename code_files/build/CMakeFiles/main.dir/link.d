@@ -4,6 +4,7 @@ main: \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
   CMakeFiles/main.dir/src/main.c.o \
   CMakeFiles/main.dir/src/func.c.o \
+  CMakeFiles/main.dir/src/database.c.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libfftw3.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libm.so \
@@ -41,6 +42,8 @@ main: \
 CMakeFiles/main.dir/src/main.c.o:
 
 CMakeFiles/main.dir/src/func.c.o:
+
+CMakeFiles/main.dir/src/database.c.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libfftw3.so:
 

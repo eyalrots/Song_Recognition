@@ -129,6 +129,30 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+src/database.o: src/database.c.o
+.PHONY : src/database.o
+
+# target to build an object file
+src/database.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/database.c.o
+.PHONY : src/database.c.o
+
+src/database.i: src/database.c.i
+.PHONY : src/database.i
+
+# target to preprocess a source file
+src/database.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/database.c.i
+.PHONY : src/database.c.i
+
+src/database.s: src/database.c.s
+.PHONY : src/database.s
+
+# target to generate assembly for a file
+src/database.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/database.c.s
+.PHONY : src/database.c.s
+
 src/func.o: src/func.c.o
 .PHONY : src/func.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main"
+	@echo "... src/database.o"
+	@echo "... src/database.i"
+	@echo "... src/database.s"
 	@echo "... src/func.o"
 	@echo "... src/func.i"
 	@echo "... src/func.s"

@@ -1,9 +1,3 @@
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <fftw3.h>
 #include "../include/func.h"
 
 int read_file(const char *input_file, unsigned char** out, long* size, wav_header_t* header) {
@@ -114,9 +108,6 @@ int convert_to_samples(unsigned char* data_buffer, double** sample_data, long* s
         raw = (int16_t)(data_buffer[byte_idx] | (data_buffer[byte_idx+1] << 8));
         //(*sample_data)[i] = get_sample(&data_buffer[i*bytes_per_sample], bytes_per_sample);
         (*sample_data)[i] = (double)raw;
-    }
-    for (int i = 200; i < 210; i++) {
-        printf("Sample [%d]: %f\n", i, (*sample_data)[i]);
     }
 
     return 0;
@@ -403,7 +394,7 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
             goto out;
         }
     }
-    printf("Created periodograms successfuly.\n");
+    
     /* Mel Filters */
     memset(after_mel, 0, sizeof(after_mel));
     memset(mel_bins, 0, sizeof(mel_bins));
@@ -416,7 +407,7 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
             }
         }
     }
-    printf("Done with Mel.\n");
+    
     /* average on all mel results -> At the very end + Decibel */
     memset(psd, 0, sizeof(psd));
     for (i = 0; i < LINEKEY_SIZE; i++) {
@@ -426,7 +417,7 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
         }
         //psd[i] = 10 * log10(psd[i]);
     }
-    printf("I have the PSD :)\n");
+    
     /* Dynamic threashold */
     memset(linekey_bits, 0, sizeof(linekey_bits));
     if (threshold_function(psd, &a, &b) < 0) {
@@ -437,7 +428,7 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
         /* convert psd[i] to dB */
         psd[i] = 10 * log10(psd[i]);
         /* check threshold value */
-        cur_threshold = (a * exp(b * (i+1))) + THRESHOLD_BIAS;
+        cur_threshold = (a + (b * (i+1)))*(10.0 / log(10)) + THRESHOLD_BIAS;
         linekey_bits[i] = psd[i] > cur_threshold;
         printf("PSD at %d: value: %lf :: threshold: %lf -> bit=%d\n", i, psd[i], cur_threshold, linekey_bits[i]);
     }
@@ -466,7 +457,8 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
 }
 
 /*---Deprecated---*/
-int generate_linekey(double* window_data, int sigma_size, int sub_size, int sample_rate, linekey_t* out_linekey) {
+int generate_linekey(double* window_data, int sigma_size, int sub_size, int sample_rate, 
+                        linekey_t* out_linekey) {
     // Variables
     double** periodograms = NULL;
     double* psd = NULL;
@@ -547,6 +539,7 @@ int generate_linekey(double* window_data, int sigma_size, int sub_size, int samp
     //threshold_function(psd, threshold);
 
     // generating the linekey
+    /*
     printf("Generating linekey.\n");
     for (i = 0; i < LINEKEY_SIZE; i++) {
         out_linekey->binary_values = (int*)calloc(LINEKEY_SIZE, sizeof(int));
@@ -554,6 +547,7 @@ int generate_linekey(double* window_data, int sigma_size, int sub_size, int samp
         out_linekey->binary_values[i] = (psd[i] > threshold[i]);
     }
     printf("Done generating linekey.\n");
+    */
 
 out:// cleanup
     for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
@@ -573,7 +567,44 @@ out:// cleanup
     return return_val;
 }
 
-int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t header, int song_idx, linekey_t* unique_linekeys, int* unique_len) {
+int new_anlyze_data(const double* audio_data, const int data_size, const wav_header_t header, int song_idx) {
+    
+    /* General variables */
+    int return_val = 0;
+    int i = 0;
+
+    /* Window data - Calculations */
+    int ms_size = (header.sample_rate * header.num_channels) / 1000; // represent the number of samples in a single ms
+    int sigma_size = SIGMA_WINDOW_LENGTH * ms_size;
+    int sub_size = SUB_WINDOW_LENGTH * ms_size;
+    int step_size = STEP_LENGTH * ms_size;
+
+    double cur_window[sigma_size];
+    uint64_t cur_linekey = 0;
+    
+    if (!audio_data) {
+        return_val = -1;
+        goto out;
+    }
+
+    /* Window Calculations */
+    for (i = 0; i < data_size; i += step_size) {
+        /* set current window */
+        memcpy(cur_window, audio_data+i, sigma_size);
+
+        /* Generate LineKey */
+        new_linekey_generation(cur_window, sigma_size, sub_size, header.sample_rate, &cur_linekey);
+        printf("Generated LineKey: %016" PRIx64 "\n", cur_linekey);
+        
+        /* Save LineKey in DataBase */
+    }
+    
+  out:
+    return return_val;
+}
+
+int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t header, 
+                    int song_idx, linekey_t* unique_linekeys, int* unique_len) {
     int ms_size = 0;
     int sigma_size = 0;
     int sub_size = 0;
@@ -611,6 +642,7 @@ int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t head
             unique_linekeys = (linekey_t*)realloc(unique_linekeys, (*unique_len+50) * sizeof(linekey_t));
             *unique_len += 50;
         }
+        /*
         generate_linekey(cur_window, sigma_size, sub_size, header.sample_rate, &unique_linekeys[cur_linekey]);
         printf("Generated linekey number %d\n", cur_linekey);
         // insert current data to position array (song index and position in said song)
@@ -637,6 +669,7 @@ int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t head
         // advance indices of arrays
         cur_linekey++;
         unique_linekeys[cur_linekey].new_pos++;
+        */
     }    
 
 out:

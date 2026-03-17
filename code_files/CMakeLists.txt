@@ -13,6 +13,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 add_executable(main 
     src/main.c 
     src/func.c
+    src/database.c
 )
 
 # 2. Add your local "include" folder to the search path

@@ -1,7 +1,3 @@
-#include <stdatomic.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../include/main.h"
 
 int main() {
@@ -30,8 +26,8 @@ int main() {
     int sub_size = SUB_WINDOW_LENGTH * ms_size;
     printf("Size of ms: %d :: Size of window: %d || Size of sub window: %d\n", ms_size, sigma_size, sub_size);
     uint64_t linekey;
-    new_linekey_generation(audio_data+(sigma_size*3), sigma_size, sub_size, header.sample_rate, &linekey);
-    printf("LineKey of a single window: %lu\n", linekey);
+    new_linekey_generation(audio_data+(sigma_size*5), sigma_size, sub_size, header.sample_rate, &linekey);
+    printf("LineKey of a single window: %016" PRIx64 "\n", linekey);
     
     free(data_buffer);
     

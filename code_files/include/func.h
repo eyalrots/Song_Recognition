@@ -1,7 +1,14 @@
 #ifndef __FUNC_H__
 #define __FUNC_H__
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h> // For fixed-width integer types
+#include <inttypes.h>
+#include <math.h>
+#include <fftw3.h>
+#include "database.h"
 
 #define SIGMA_WINDOW_LENGTH 300
 #define SUB_WINDOW_LENGTH   200
@@ -30,13 +37,6 @@ typedef struct wav_header {
     uint16_t block_align;           // num_channels * bits_per_sample / 8
     uint16_t bits_per_sample;       // 8, 16, 24, etc.
 } wav_header_t;
-
-typedef struct linekey {
-    int* binary_values;
-    int** position_arr;
-    int pos_arr_len;
-    int new_pos;
-} linekey_t;
 
 int read_file(const char* input_file, unsigned char** out, long* size, wav_header_t* header);
 int convert_to_samples(unsigned char* data_buffer, double** sample_data, long* size, int bits_per_sample);
