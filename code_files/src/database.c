@@ -20,6 +20,7 @@ int search_linekey(uint64_t linekey, int *lk_idx) {
 
   out:
     if (f) fclose(f);
+    f = NULL;
     return return_val;
 }
 
@@ -46,6 +47,7 @@ int add_new_c_entry(linekey_info_t new_info, uint64_t start_offset) {
         if (!start_offset && ftell(f)) {
             /* Creating new Database -> clear old one. */
             fclose(f);
+            f = NULL;
             f = fopen(PATH_TO_C, "wb+");
             if (!f) return -1;
         }
@@ -84,6 +86,7 @@ int add_new_c_entry(linekey_info_t new_info, uint64_t start_offset) {
 
   out:
     if (f) fclose(f);
+    f = NULL;
     return return_val;
 }
 
@@ -137,23 +140,28 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
         cur_linekey.value = new_linekey;
         cur_linekey.count = 1;
         /* Start offset is the end of C file */
-        fc = fopen(PATH_TO_C, "rb+");
+        fc = fopen(PATH_TO_C, "ab+");
         if (!fc) {
             /* Does not exist -> offset if 0 */
             cur_linekey.start_offset = 0;
         } else {
             fseek(fc, 0, SEEK_END);
             cur_linekey.start_offset = ftell(fc);
+            /* Write new entry to C file */
+            fwrite(&info, sizeof(info), 1, fc);
             fclose(fc);
+            fc = NULL;
         }
         fwrite(&cur_linekey, sizeof(cur_linekey), 1, fl);
-        return_val = add_new_c_entry(info, cur_linekey.start_offset);
+        //return_val = add_new_c_entry(info, cur_linekey.start_offset);
         goto out;
     }
 
   out:
     if (fl) fclose(fl);
+    fl = NULL;
     if (fc) fclose(fc);
+    fc = NULL;
     return return_val;
 }
 
@@ -174,4 +182,69 @@ int search_info(linekey_info_t *info_array, const int lk_idx) {
 
   out:
     return return_val;
+}
+
+void print_linekey(linekey_t linekey) {
+    printf("Value: 0x%016" PRIx64 " :: Offset: %lu :: Count: %lu\n", linekey.value, linekey.start_offset, linekey.count);
+}
+
+void print_info(linekey_info_t info, int cur_loc) {
+    printf("ID: %d :: Position: %d :: Next: %d :: Location in file: %d\n", info.id, info.p, info.next_offset, cur_loc);
+}
+
+int print_data(const char *name) {
+    int return_val = 0;
+    FILE *f = NULL;
+    int type = 0; /* 0 -> linekey || 1 -> info */
+    linekey_t cur_linekey;
+    linekey_info_t cur_info;
+
+    if (!name) return -1;
+    
+    /* Open file */
+    if (!strncmp(name, L_NAME, sizeof(L_NAME))) {
+        /* File is L */
+        f = fopen(PATH_TO_L, "rb");
+        if (!f) {
+            return_val = -1;
+            goto out;
+        }
+    } else if (!strncmp(name, C_NAME, sizeof(C_NAME))) {
+        f = fopen(PATH_TO_C, "rb");
+        if (!f) {
+            return_val = -1;
+            goto out;
+        }
+        type = 1;
+    } else {
+        return_val = -1;
+        goto out;
+    }
+
+    /* Read File -> currently print */
+    if (type) {
+        while (fread(&cur_info, sizeof(cur_info), 1, f) == 1)
+            print_info(cur_info, ftell(f) - sizeof(cur_info));
+    } else {
+        while (fread(&cur_linekey, sizeof(cur_linekey), 1, f) == 1)
+            print_linekey(cur_linekey);
+    }
+
+  out:
+    if (f) fclose(f);
+    f = NULL;
+    return return_val;
+}
+
+int reset_database(void) {
+    FILE *f = NULL;
+
+    f = fopen(PATH_TO_L, "wb");
+    if (!f) return -1;
+    fclose(f);
+    f = NULL;
+    f = fopen(PATH_TO_C, "wb");
+    if (!f) return -1;
+    fclose(f);
+    return 0;
 }

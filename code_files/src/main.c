@@ -26,11 +26,32 @@ int main() {
     int sub_size = SUB_WINDOW_LENGTH * ms_size;
     printf("Size of ms: %d :: Size of window: %d || Size of sub window: %d\n", ms_size, sigma_size, sub_size);
     uint64_t linekey;
-    new_linekey_generation(audio_data+(sigma_size*5), sigma_size, sub_size, header.sample_rate, &linekey);
-    printf("LineKey of a single window: %016" PRIx64 "\n", linekey);
+    new_linekey_generation(audio_data+(sigma_size*0), sigma_size, sub_size, header.sample_rate, &linekey);
+    printf("LineKey of a single window: 0x%016" PRIx64 "\n", linekey);
     
     free(data_buffer);
-    
+
+    /* Check database */
+    reset_database();
+    uint64_t linekeys[5];
+    printf("\nCheack DataBase functions:\n");
+    for (int i = 0; i < 5; i++) {
+        new_linekey_generation(audio_data+(sigma_size*i), sigma_size, sub_size, header.sample_rate, &(linekeys[i]));
+        printf("LineKey number %d: 0x%016" PRIx64 "\n", i, linekeys[i]);
+        if (new_linekey_entry(linekeys[i], i, i) < 0) {
+            fprintf(stderr, "Error: Failed to write new entry.\n");
+        }
+    }
+    /* Try to add the same linekey again */
+    if (new_linekey_entry(linekeys[2], 5, 2) < 0) {
+        fprintf(stderr, "Error: Failed to write new entry.\n");
+    }
+    /* Read database */
+    printf("L file:\n");
+    print_data(L_NAME);
+    printf("C file:\n");
+    print_data(C_NAME);
+
     /*
     // prepare arrays
     unique_linekeys = (linekey_t*)calloc(500, sizeof(linekey_t));

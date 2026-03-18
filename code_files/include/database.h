@@ -8,8 +8,9 @@
 #include <inttypes.h>
 
 #define PATH_TO_L "../database/linekeys.bin"
-#define L_NAME "LKDB"
 #define PATH_TO_C "../database/song_info.bin"
+#define L_NAME "LKDB"
+#define C_NAME "CLDB"
 
 typedef struct linekey {
     uint64_t value; // The value of the linekey
@@ -22,5 +23,10 @@ typedef struct linekey_info {
     uint32_t p;  // Position in said song the linekey if from
     uint32_t next_offset; // Offset to the next item on the list
 } linekey_info_t;
+
+/* Database Funcitons */
+int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int position);
+int print_data(const char *name);
+int reset_database(void);
 
 #endif

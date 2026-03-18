@@ -423,24 +423,24 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
     if (threshold_function(psd, &a, &b) < 0) {
         return -1;
     }
-    printf("a: %lf :: b: %lf\n", a, b);
+    
     for (i = 0; i < LINEKEY_SIZE; i++) {
         /* convert psd[i] to dB */
         psd[i] = 10 * log10(psd[i]);
         /* check threshold value */
         cur_threshold = (a + (b * (i+1)))*(10.0 / log(10)) + THRESHOLD_BIAS;
         linekey_bits[i] = psd[i] > cur_threshold;
-        printf("PSD at %d: value: %lf :: threshold: %lf -> bit=%d\n", i, psd[i], cur_threshold, linekey_bits[i]);
+        //printf("PSD at %d: value: %lf :: threshold: %lf -> bit=%d\n", i, psd[i], cur_threshold, linekey_bits[i]);
     }
-    printf("LineKey is created.\n");
+    
     /* Final result */
     *out_linekey = 0;
-    printf("LineKey: ");
+    //printf("LineKey: ");
     for (i = 0; i < LINEKEY_SIZE; i++) {
-        printf("%d", linekey_bits[i]);
+        // printf("%d", linekey_bits[i]);
         *out_linekey = (*out_linekey << 1) | (linekey_bits[i] & 0x01);
     }
-    printf("\n");
+    
 
   out: 
     /* Cleanup */
