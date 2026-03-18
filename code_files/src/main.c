@@ -1,81 +1,32 @@
 #include "../include/main.h"
 
 int main() {
-    unsigned char* data_buffer= NULL;
     long size = 0;
     wav_header_t header;
     double* audio_data = NULL;
-    /*
-    linekey_t* unique_linekeys = NULL;
-    int unique_len = 0;
-    int song_idx = 0;
-    int i = 0;
-    uint64_t cur_linekey = 0;
-    */
-
-    int read_num = read_file(PATH_TO_FILE, &data_buffer, &size, &header);
-    if (!data_buffer || read_num != 0) {
-        fprintf(stderr, "Error getting data from file.\n");
-        return 1;
-    }
-
-    convert_to_samples(data_buffer, &audio_data, &size, header.bits_per_sample);
-
-    int ms_size = (header.sample_rate * header.num_channels) / 1000; // represent the number of samples in a single ms
-    int sigma_size = SIGMA_WINDOW_LENGTH * ms_size;
-    int sub_size = SUB_WINDOW_LENGTH * ms_size;
-    printf("Size of ms: %d :: Size of window: %d || Size of sub window: %d\n", ms_size, sigma_size, sub_size);
-    uint64_t linekey;
-    new_linekey_generation(audio_data+(sigma_size*0), sigma_size, sub_size, header.sample_rate, &linekey);
-    printf("LineKey of a single window: 0x%016" PRIx64 "\n", linekey);
-    
-    free(data_buffer);
-
-    /* Check database */
+    /* Reset Database -> Remove later! */
     reset_database();
-    uint64_t linekeys[5];
-    printf("\nCheack DataBase functions:\n");
-    for (int i = 0; i < 5; i++) {
-        new_linekey_generation(audio_data+(sigma_size*i), sigma_size, sub_size, header.sample_rate, &(linekeys[i]));
-        printf("LineKey number %d: 0x%016" PRIx64 "\n", i, linekeys[i]);
-        if (new_linekey_entry(linekeys[i], i, i) < 0) {
-            fprintf(stderr, "Error: Failed to write new entry.\n");
-        }
-    }
-    /* Try to add the same linekey again */
-    if (new_linekey_entry(linekeys[2], 5, 2) < 0) {
-        fprintf(stderr, "Error: Failed to write new entry.\n");
-    }
+
+    /* Read raw file 1*/
+    read_and_convert(PATH_TO_FILE_1, &audio_data, &header, &size);
+
+    anlyze_new_data(audio_data, size, header, 1);
+
+    if (audio_data) free(audio_data);
+
+    /* Read raw file 1 again */
+    read_and_convert(PATH_TO_FILE_2, &audio_data, &header, &size);
+    
+    /* Insert new data to database */
+    anlyze_new_data(audio_data, size, header, 2);
+
     /* Read database */
     printf("L file:\n");
     print_data(L_NAME);
     printf("C file:\n");
     print_data(C_NAME);
 
-    /*
-    // prepare arrays
-    unique_linekeys = (linekey_t*)calloc(500, sizeof(linekey_t));
-    unique_len = 500;
-    for (i = 0; i < unique_len; i++) {
-        unique_linekeys[i].position_arr = (int**)calloc(20, sizeof(int*));
-        unique_linekeys[i].pos_arr_len = 20;
-        unique_linekeys[i].new_pos = 0;
-    }
-
-    analyze_data(audio_data, (const) size, header, song_idx, unique_linekeys, &unique_len);
-
-    printf("Final length of unique array is: %d\n", unique_len);
-
-    for (i = 0; i < unique_len; i++) {
-        cur_linekey = convert_linekey_to_number(unique_linekeys[i].binary_values);
-        printf("linekey[%d] = %lu\n", i, cur_linekey);
-    }
-
-    printf("Done generation of linekeys, please continue to making the database.\n");
-
-    free(unique_linekeys);
-    free(data_buffer);
-    */
-    free(audio_data);
+    /* Cleanup */
+    if (audio_data) free(audio_data);
     return 0;
 }

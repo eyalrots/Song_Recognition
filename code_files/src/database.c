@@ -1,28 +1,9 @@
 #include "../include/database.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-
-int search_linekey(uint64_t linekey, int *lk_idx) {
-
-    int return_val = 0;
-    FILE *f = NULL;
-    uint64_t cur_linekey = 0;
-
-    /* Open file - if not exists create */
-    f = fopen(PATH_TO_L, "rb+");
-    if (!f) {
-        return_val = -1;
-        goto out;
-    }
-
-
-
-  out:
-    if (f) fclose(f);
-    f = NULL;
-    return return_val;
-}
+#include <threads.h>
 
 int add_new_c_entry(linekey_info_t new_info, uint64_t start_offset) {
     /* NOTE: The function does not close the file! */
@@ -44,16 +25,18 @@ int add_new_c_entry(linekey_info_t new_info, uint64_t start_offset) {
     /* Check if empty */
     fseek(f, 0, SEEK_END);
     if (!ftell(f) || !start_offset) {
-        if (!start_offset && ftell(f)) {
-            /* Creating new Database -> clear old one. */
-            fclose(f);
-            f = NULL;
-            f = fopen(PATH_TO_C, "wb+");
-            if (!f) return -1;
-        }
+        // if (!start_offset && ftell(f)) {
+        //     /* Creating new Database -> clear old one. */
+        //     fclose(f);
+        //     f = NULL;
+        //     f = fopen(PATH_TO_C, "wb+");
+        //     if (!f) return -1;
+        // }
+        
         /* File is empty -> write new info at the start and exit */
         fseek(f, 0, SEEK_SET);
         fwrite(&new_info, sizeof(new_info), 1, f);
+        fflush(f);
         return_val = 0;
         goto out;
     }
@@ -70,10 +53,12 @@ int add_new_c_entry(linekey_info_t new_info, uint64_t start_offset) {
             end_pos = ftell(f);
             /* Write new node */
             fwrite(&new_info, sizeof(new_info), 1, f);
+            fflush(f);
             /* Link the last node to the list */
             cur_info.next_offset = end_pos;
             fseek(f, last_pos, SEEK_SET);
             fwrite(&cur_info, sizeof(cur_info), 1, f);
+            fflush(f);
 
             return_val = 0;
             goto out;
@@ -111,6 +96,7 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
         fl = fopen(PATH_TO_L, "wb+");
         /* new open failed! */
         if (!fl) {
+            fprintf(stderr, "Error: Failed to open L file.\n");
             return_val = -1;
             goto out;
         }
@@ -118,8 +104,11 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
         cur_linekey.value = new_linekey;
         cur_linekey.count = 1;
         fwrite(&cur_linekey, sizeof(cur_linekey), 1, fl);
+        fflush(fl);
         /* Write to C file */
         return_val = add_new_c_entry(info, cur_linekey.start_offset);
+        if (return_val < 0)
+            fprintf(stderr, "Error: Failed to insert data to C file.\n");
         goto out;
     } else {
         /* Find the linekey */
@@ -129,8 +118,11 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
                 /* Go back to start of cur_linekey and rewrite it */
                 fseek(fl, -sizeof(cur_linekey), SEEK_CUR);
                 fwrite(&cur_linekey, sizeof(cur_linekey), 1, fl);
+                fflush(fl);
                 /* Update the list in C */
                 return_val = add_new_c_entry(info, cur_linekey.start_offset);
+                if (return_val < 0)
+                    fprintf(stderr, "Error: Failed to insert data to C file.\n");
                 goto out;
             }
         }
@@ -149,11 +141,12 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
             cur_linekey.start_offset = ftell(fc);
             /* Write new entry to C file */
             fwrite(&info, sizeof(info), 1, fc);
+            fflush(fc);
             fclose(fc);
             fc = NULL;
         }
         fwrite(&cur_linekey, sizeof(cur_linekey), 1, fl);
-        //return_val = add_new_c_entry(info, cur_linekey.start_offset);
+        fflush(fl);
         goto out;
     }
 
@@ -162,25 +155,6 @@ int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int 
     fl = NULL;
     if (fc) fclose(fc);
     fc = NULL;
-    return return_val;
-}
-
-int search_info(linekey_info_t *info_array, const int lk_idx) {
-    int return_val = 0;
-    FILE *f = NULL;
-    linekey_info_t cur_info;
-
-    f = fopen(PATH_TO_C, "rb+");
-    if (!f) {
-        return -1;
-    }
-
-    /* No heder for now, could change in the future */
-    /* Find the list for the linekey at position lk_idx */
-    fseek(f, sizeof(linekey_info_t)*lk_idx, SEEK_SET);
-    
-
-  out:
     return return_val;
 }
 
@@ -247,4 +221,63 @@ int reset_database(void) {
     if (!f) return -1;
     fclose(f);
     return 0;
+}
+
+int get_linekey(const uint64_t linekey, linekey_t *out) {
+    FILE *f = NULL;
+    linekey_t cur_key;
+
+    f= fopen(PATH_TO_L, "rb");
+    if (!f) return -1;
+
+    while (fread(&cur_key, sizeof(cur_key), 1, f) == 1) {
+        if (cur_key.value == linekey) {
+            *out = cur_key;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int read_linekey_list(const uint64_t linekey, linekey_info_t **out_list, int *out_len) {
+    /* Get the list:
+     * 1. Search LineKey in L file.
+     * 2. Allocate space according to count variable.
+     * 3. Go to start offset in C and start getting the list.
+     */
+    
+    int return_val = 0;
+    uint64_t i = 0;
+    FILE *f = NULL;
+    linekey_t key_obj;
+    uint32_t next_addr = 0;
+
+    return_val = get_linekey(linekey, &key_obj);
+    if (return_val < 0) goto out;
+
+    if (!out_len) return -1;
+    *out_len = key_obj.count;
+    if (!key_obj.count) return 0;
+    *out_list = (linekey_info_t *) calloc(key_obj.count, sizeof(linekey_info_t));
+
+    f = fopen(PATH_TO_C, "rb");
+    if (!f) return -1;
+    next_addr = key_obj.start_offset;
+    for (i = 0; i < key_obj.count; i++) {
+        fseek(f, next_addr, SEEK_SET);
+        if (fread(&((*out_list)[i]), sizeof(linekey_info_t), 1, f) != 1) {
+            return_val = -1;
+            goto out;
+        }
+        next_addr = (*out_list)[i].next_offset;
+        if (!next_addr && i < key_obj.count - 1) {
+            return_val = -1;
+            goto out;
+        }
+    }
+
+  out:
+    if (f) fclose(f);
+    f = NULL;
+    return return_val;
 }

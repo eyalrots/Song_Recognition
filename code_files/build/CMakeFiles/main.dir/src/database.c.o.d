@@ -38,4 +38,6 @@ CMakeFiles/main.dir/src/database.c.o: \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-uintn.h /usr/include/bits/stdint-least.h \
- /usr/include/inttypes.h
+ /usr/include/inttypes.h /usr/include/threads.h /usr/include/time.h \
+ /usr/include/bits/time.h /usr/include/bits/types/struct_tm.h \
+ /usr/include/bits/types/struct_itimerspec.h

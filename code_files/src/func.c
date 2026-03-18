@@ -189,76 +189,6 @@ int fft_to_mel(const uint32_t fft_size, double* mel_bins, int num_of_mel_bins) {
     return 0;
 }
 
-/*---Deprecated---*/
-double triangular_filter(double f, double start, double peak, double end) {
-    if (f <= start || f >= end) {
-        return 0;
-    }
-
-    if (f >= start && f < peak) {
-        return (f - start) / (peak - start);
-    } else if (f >= peak && f <end) {
-        return (end - f) / (end - peak);
-    }
-
-    return 0;
-}
-
-/*---Deprecated---*/
-int pass_periodogram_through_triangular_filter(double* periodogram, double* result, int size, double start, double peak, double end) {
-    int i = 0;
-    
-    if (!periodogram || !result) {
-        return 1;
-    }
-    *result = 0;
-    for (i = 0; i < size; i++) {
-        *result += triangular_filter(periodogram[i], start, peak, end);
-    }
-
-    return 0;
-}
-
-/*---Deprecated---*/
-int pass_periodogram_through_mel_filter(double* periodogram, double* result, double start, double end) {
-    int m = 0;
-
-    if (!periodogram  || !result) {
-        return 1;
-    }
-
-    *result = 0;
-    for (m = start; m < end; m++) {
-        *result += periodogram[m];
-    }
-
-    //*result = *result / (end - start);
-
-    return 0;
-}
-
-/*---Deprecated---*/
-int calculate_psd(double** mel_filter_results, double* out_psd) {
-    int i = 0;
-    int j = 0;
-    double per_sum = 0;
-
-    if (!mel_filter_results || !out_psd) {
-        return 1;
-    }
-
-    for (i = 0; i < LINEKEY_SIZE; i++) {
-        per_sum = 0;
-        for (j = 0; j < NUM_OF_PERIODOGRAMS; j++) {
-            per_sum += mel_filter_results[j][i];
-        }
-        out_psd[i] = 10 * log10(per_sum);
-        out_psd[i] = isinf(out_psd[i]) ? 1 : out_psd[i];
-    }
-
-    return 0;
-}
-
 int threshold_function(double* psd, double* a_out, double* b_out) {
 /**
  * Calculates a(t_n) and b(t_n) based on the provided formulas.
@@ -318,7 +248,7 @@ int threshold_function(double* psd, double* a_out, double* b_out) {
 }
 
 int new_linekey_generation(double* window_data, int sigma_size, int sub_size, int sample_rate, uint64_t* out_linekey) {
-
+    (void)sample_rate; /* Unused. */
     /* General variables */
     int return_val = 0;
     int i = 0;
@@ -456,118 +386,7 @@ int new_linekey_generation(double* window_data, int sigma_size, int sub_size, in
     return return_val;
 }
 
-/*---Deprecated---*/
-int generate_linekey(double* window_data, int sigma_size, int sub_size, int sample_rate, 
-                        linekey_t* out_linekey) {
-    // Variables
-    double** periodograms = NULL;
-    double* psd = NULL;
-    double* sub_window = NULL;
-    double* fft_values = NULL;
-    double* mel_points = NULL;
-    double* threshold = NULL;
-    double** mel_filter_results = NULL; // total of LINEKEY_SIZE array each the result of a single mel filter
-    double delta_f = 0;
-    int step_size = 0;
-    int per_size = 0;
-    int i = 0;
-    int j = 0;
-    int return_val = 0;
-    // FFT plan variables
-    double *in = NULL;
-    fftw_complex *out = NULL;
-    fftw_plan p = NULL;
-
-    if (!window_data || !sub_size || !sigma_size || !out_linekey) {
-        return_val = 1;
-        goto out;
-    }
-
-    // Prepare fftw plan
-    per_size = (sub_size / 2 + 1);
-    in = (double *) fftw_malloc(sizeof(double) * sub_size);
-    out = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * per_size);
-    if (!in || !out) {
-        fprintf(stderr, "Error: Memory allocation in FFTW failed.\n");
-        return_val = 1;
-        goto out;
-    }
-    // fftw plan creation
-    p = fftw_plan_dft_r2c_1d(sub_size, in, out, FFTW_MEASURE);
-
-    // sub_size is the number of "points" (samples) in the FFT calculation (or hamming for that matter)
-    step_size = ((sigma_size - sub_size) / NUM_OF_PERIODOGRAMS);
-    periodograms = (double**)calloc(NUM_OF_PERIODOGRAMS, sizeof(double*));
-    sub_window = window_data; // start position of the first sub window
-
-    // Creation of Periodograms
-    for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
-        sub_window += (i*step_size);
-        periodograms[i] = (double *) calloc(per_size, sizeof(double));
-        /* This is not good! it chabges the original samples!!!! */
-        hamming(sub_window, sub_size);
-        //create_periodogram(sub_window, sub_size, per_size, in, out, p, periodograms[i]); // eq. (2) in paper
-    }
-
-    // calculate FFT values that are present in the PSD
-    delta_f = (double)sample_rate / per_size;
-    fft_values = (double*) calloc(per_size, sizeof(double));
-    for (i = 0; i < per_size; i++) {
-        fft_values[i] = i * delta_f;
-    }
-    printf("last frequency: %lf\n", fft_values[per_size-1]);
-
-    // Mel filter bank calculation
-    mel_points = (double *) calloc(LINEKEY_SIZE+1, sizeof(double));
-    mel_filter_results = (double**) calloc(NUM_OF_PERIODOGRAMS, sizeof(double*));
-    fft_to_mel(3, mel_points, delta_f); // MOVE TO OUTER FUNCTION!!!
-    // calculate mel results for each periodogram
-    for (i = 0; i < NUM_OF_PERIODOGRAMS; i++) {
-        mel_filter_results[i] = (double*) calloc(LINEKEY_SIZE, sizeof(double));
-        for (j = 1; j < LINEKEY_SIZE+1; j++) {
-            pass_periodogram_through_mel_filter(periodograms[i], &mel_filter_results[i][j-1], mel_points[j-1], mel_points[j]); // eq. (3) in paper
-            //pass_periodogram_through_triangular_filter(periodograms[i], &mel_filter_results[i][j-1], per_size, mel_points[j-1], mel_points[j], mel_points[j+1]);
-        }
-    }
-
-    // calculate PSD by summing up the mel filters
-    psd = (double*) calloc(LINEKEY_SIZE, sizeof(double));
-    calculate_psd(mel_filter_results, psd);
-
-    // Adaptive threshold function
-    threshold = (double*) calloc(LINEKEY_SIZE, sizeof(double));
-    //threshold_function(psd, threshold);
-
-    // generating the linekey
-    /*
-    printf("Generating linekey.\n");
-    for (i = 0; i < LINEKEY_SIZE; i++) {
-        out_linekey->binary_values = (int*)calloc(LINEKEY_SIZE, sizeof(int));
-        printf("linekey[%d] = (%lf > %lf)\n", i, psd[i], threshold[i]);
-        out_linekey->binary_values[i] = (psd[i] > threshold[i]);
-    }
-    printf("Done generating linekey.\n");
-    */
-
-out:// cleanup
-    for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
-        free(periodograms[i]);
-    }
-    free(periodograms);
-    for (i=0; i<NUM_OF_PERIODOGRAMS; i++) {
-        free(mel_filter_results[i]);
-    }
-    free(mel_filter_results);
-    free(psd);
-    free(threshold);
-    fftw_destroy_plan(p);
-    fftw_free(in);
-    fftw_free(out);
-    free(mel_points);
-    return return_val;
-}
-
-int new_anlyze_data(const double* audio_data, const int data_size, const wav_header_t header, int song_idx) {
+int anlyze_new_data(const double* audio_data, const int data_size, const wav_header_t header, const int song_idx) {
     
     /* General variables */
     int return_val = 0;
@@ -588,102 +407,279 @@ int new_anlyze_data(const double* audio_data, const int data_size, const wav_hea
     }
 
     /* Window Calculations */
-    for (i = 0; i < data_size; i += step_size) {
+    for (i = 0; i <= data_size-step_size; i += step_size) {
         /* set current window */
-        memcpy(cur_window, audio_data+i, sigma_size);
+        memcpy(cur_window, audio_data + i, sigma_size);
 
         /* Generate LineKey */
         new_linekey_generation(cur_window, sigma_size, sub_size, header.sample_rate, &cur_linekey);
-        printf("Generated LineKey: %016" PRIx64 "\n", cur_linekey);
         
         /* Save LineKey in DataBase */
+        if (new_linekey_entry(cur_linekey, song_idx, i) < 0) {
+            fprintf(stderr, "Error: Failed ot enter linekey for song %d at position %d.\n", song_idx, i);
+            return_val = -1;
+            goto out;
+        }
     }
     
   out:
     return return_val;
 }
 
-int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t header, 
-                    int song_idx, linekey_t* unique_linekeys, int* unique_len) {
+int read_and_convert(char *path_to_file, double **sample_output, wav_header_t *out_header, long *size) {
+    unsigned char* data_buffer= NULL;
+    int read_num;
+
+    /* Read raw file */
+    read_num = read_file(path_to_file, &data_buffer, size, out_header);
+    if (!data_buffer || read_num != 0) {
+        fprintf(stderr, "Error getting data from file.\n");
+        if (data_buffer) free(data_buffer);
+        return -1;
+    }
+
+    /* Convert to samples */
+    convert_to_samples(data_buffer, sample_output, size, out_header->bits_per_sample);
+    /* Free data -> no need for the raw data anymore */
+    if (data_buffer) free(data_buffer); // Free space on RAM.
+    return 0;
+}
+
+int record_audio(char *output_path) {
+    int status = 0;
+    char command[256];
+    
+    memset(command, 0, sizeof(command));
+
+    snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", RECORD_DURATION, output_path);
+
+    printf("Recording...\n");
+
+    status = system(command);
+
+    if (!status) {
+        printf("Recording saved to %s\n", output_path);
+        return 0;
+    } else {
+        fprintf(stderr, "Error: Recording failed.\n");
+        return -1;
+    }
+}
+
+uint64_t key_dist(const uint64_t key_1, const uint64_t key_2) {
+    uint64_t xor = 0;
+    uint64_t dist = 0;
+    int i = 0;
+
+    /* XOR to get different bits (the distance) */
+    xor = key_1 ^ key_2;
+
+    /* Count how many 1s are there - the actual distance */
+    for (i = 0; i < 64; i++)
+        if ((xor >> i) & 1)
+            dist++;
+
+    return dist;
+}
+
+uint64_t get_min_dist(const uint64_t linekey) {
+    FILE *f = NULL;
+    uint64_t cur_dist = 0;
+    uint64_t min_dist = -1; // Max value for uint64_t.
+    linekey_t cur_key;
+
+    f = fopen(PATH_TO_L, "rb");
+    if (!f) return -1;
+
+    while (fread(&cur_key, sizeof(cur_key), 1, f) == 1) {
+        cur_dist = key_dist(linekey, cur_key.value);
+        if (cur_dist < min_dist) {
+            min_dist = cur_dist;
+        }
+    }
+
+    if (f) fclose(f);
+    f = NULL;
+    return min_dist;
+}
+
+void add_new_element(dynamic_list_t *list, linekey_t new_element) {
+    if (!list) return;
+    void *temp = NULL;
+    if (list->count == list->capacity) {
+        /* Double the length */
+        list->capacity = (list->capacity == 0) ? 4 : list->capacity * 2;
+        temp = realloc(list->data, list->capacity * sizeof(linekey_t));
+        if (!temp) return;
+        list->data = temp;
+    }
+    list->data[list->count++] = new_element;
+}
+
+int get_closest_list(const uint64_t linekey, dynamic_list_t *key_list) {
+    uint64_t min_dist = 0;
+    FILE *f = NULL;
+    linekey_t cur_key;
+
+    f = fopen(PATH_TO_L, "rb");
+    if (!f) return -1;
+
+    min_dist = get_min_dist(linekey);
+    while (fread(&cur_key, sizeof(cur_key), 1, f) == 1) {
+        if (key_dist(linekey, cur_key.value) <= min_dist) {
+            add_new_element(key_list, cur_key);
+        }
+    }
+
+    if (f) fclose(f);
+    f = NULL;
+    return 0;
+}
+
+int get_majority(const int *arr, const int len) {
+    int i = 0;
+    int max = 0;
+    int *backets = NULL;
+    int max_count = 0;
+    int majority = -1;
+
+    /* Find max for range of backets */
+    for (i = 0; i < len; i++) {
+        if (max < arr[i])
+            max = arr[i];
+    }
+
+    /* allocate space */
+    backets = calloc(max+1, sizeof(int));
+
+    /* Find majority */
+    for (i = 0; i < len; i++) {
+        backets[arr[i]]++;
+        if (backets[arr[i]] > max_count) {
+            max_count = backets[arr[i]];
+            majority = arr[i];
+        }
+    }
+
+    /* Cleanup */
+    free(backets);
+
+    return majority;
+}
+
+int recognize_recording(char *output_path) {
+    /* General Variables */
+    int return_val = 0;
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    /* Recorded Audio Variables */
+    double* audio_data = NULL;
+    wav_header_t header;
+    long size;
+
+    /* Analyze Variables */
+    int num_of_keys = RECORD_DURATION*1000 / SIGMA_WINDOW_LENGTH;
+    uint64_t rec_keys[num_of_keys];
     int ms_size = 0;
     int sigma_size = 0;
     int sub_size = 0;
     int step_size = 0;
-    double* cur_window = NULL;
-    int return_val = 0;
-    int i = 0;
-    int cur_linekey = 0;
 
-    if (!audio_data || !data_size) {
-        fprintf(stderr, "Error: one of the input values is empty.\n");
-        return_val = 1;
-        goto out;
-    }
-    /* I don't think likey array should be here! */
-    if (!unique_linekeys && *unique_len) {
-        fprintf(stderr, "Error: unique linekey length != 0 but pointer is null.\n");
-        return_val = 1;
-        goto out;
-    } else if (!unique_linekeys) {
-        unique_linekeys = calloc(50, sizeof(linekey_t));
-        *unique_len = 50;
-    }
+    /* Recognize Variables */
+    dynamic_list_t *dist_mat[num_of_keys]; // each element is a list of LineKeys
+    linekey_info_t *cur_list = NULL;
+    int cur_len = 0;
+    int majority_list[num_of_keys];
+    /* Majority of L_i_j */
+    int *id_list = NULL;
+    int maj_id;
+    /* Majority of mat[i] */
+    int *id_list_i = NULL;
 
+    if (record_audio(output_path) < 0) return -1;
+
+    /* Read file */
+    read_and_convert(output_path, &audio_data, &header, &size);
+
+    /* Window data - Calculations */
     ms_size = (header.sample_rate * header.num_channels) / 1000; // represent the number of samples in a single ms
     sigma_size = SIGMA_WINDOW_LENGTH * ms_size;
     sub_size = SUB_WINDOW_LENGTH * ms_size;
     step_size = STEP_LENGTH * ms_size;
 
-    // go through data with sigma windows
-    for (i = 0; i < data_size; i+=step_size) {
-        cur_window = audio_data + i;
-        // expand unique linekey array if full -> maybe not here?
-        if (cur_linekey >= *unique_len) {
-            unique_linekeys = (linekey_t*)realloc(unique_linekeys, (*unique_len+50) * sizeof(linekey_t));
-            *unique_len += 50;
-        }
-        /*
-        generate_linekey(cur_window, sigma_size, sub_size, header.sample_rate, &unique_linekeys[cur_linekey]);
-        printf("Generated linekey number %d\n", cur_linekey);
-        // insert current data to position array (song index and position in said song)
-        // check if there is an error with the array
-        if (!unique_linekeys[cur_linekey].position_arr && unique_linekeys[cur_linekey].pos_arr_len) {
-            fprintf(stderr, "Error: position array length != 0 but pointer is null.\n");
-            return_val = 1;
-            goto out;
-        } 
-        // if array is empty (first song input) then create a new array
-        else if (!unique_linekeys[cur_linekey].position_arr) {
-            unique_linekeys[cur_linekey].position_arr = (int**)calloc(20, sizeof(int*));
-            unique_linekeys[cur_linekey].pos_arr_len = 20;
-        } 
-        // expand array if full
-        else if (unique_linekeys[cur_linekey].new_pos >= unique_linekeys[cur_linekey].pos_arr_len) {
-            unique_linekeys[cur_linekey].position_arr = (int**)realloc(unique_linekeys[cur_linekey].position_arr, (unique_linekeys[cur_linekey].pos_arr_len + 20) * sizeof(int*));
-            unique_linekeys[cur_linekey].pos_arr_len += 20;
-        }
-        // insert to array the data
-        unique_linekeys[cur_linekey].position_arr[unique_linekeys[cur_linekey].new_pos] = (int*) calloc(2, sizeof(int));
-        unique_linekeys[cur_linekey].position_arr[unique_linekeys[cur_linekey].new_pos][0] = song_idx;
-        unique_linekeys[cur_linekey].position_arr[unique_linekeys[cur_linekey].new_pos][1] = song_idx;
-        // advance indices of arrays
-        cur_linekey++;
-        unique_linekeys[cur_linekey].new_pos++;
-        */
-    }    
+    double cur_window[sigma_size]; // I want it on the stack
 
-out:
-    return return_val;
-}
-
-uint64_t convert_linekey_to_number(int* linekey) {
-    uint64_t result = 0;
-    int i = 0;
-
-    for (i = 0; i < LINEKEY_SIZE; i++) {
-        printf("bit[%d] = %d\n", i, linekey[i]);
-        result += linekey[i] * pow(2, i);
+    /* Get all keys */
+    if (!audio_data) {
+        return_val = -1;
+        goto out;
     }
 
-    return result;
+    /* Check recording size */
+    if (size / ms_size >= RECORD_DURATION*1000) {
+        fprintf(stderr, "Error: Recording is longer than 5 seconds.\n");
+        return_val = -1;
+        goto out;
+    }
+
+    /* Init distance matrix */
+    for (i = 0; i < num_of_keys; i++) {
+        dist_mat[i] = malloc(sizeof(dynamic_list_t));
+        memset(dist_mat[i], 0, sizeof(dynamic_list_t));
+    }
+
+    /* Window Calculations */
+    for (i = 0; i <= size-step_size; i += step_size) {
+        /* set current window */
+        memcpy(cur_window, audio_data + i, sigma_size);
+
+        /* Generate LineKey */
+        new_linekey_generation(cur_window, sigma_size, sub_size, header.sample_rate, &rec_keys[j]);
+
+        /* Get distant list */
+        get_closest_list(rec_keys[j], dist_mat[j]);
+        j++;
+    }
+
+    /* Search song in database */
+    for (i = 0; i < num_of_keys; i++) {
+        /* dist_mat[i] -> fynamic list of linekeys */
+        id_list_i = calloc(dist_mat[i]->count, sizeof(int));
+        for (j = 0; j < dist_mat[i]->count; j++) {
+            /* Get list of info */
+            read_linekey_list(dist_mat[i]->data[j].value, &cur_list, &cur_len);
+            /* Get int list of IDs */
+            if (cur_len > 0) id_list = calloc(cur_len, sizeof(int));
+            for (k = 0; k < cur_len; k++) {
+                id_list[k] = cur_list[k].id;
+            }
+            /* Call function that finds majority */
+            maj_id = get_majority(id_list, cur_len);
+            id_list_i[j] = maj_id;   
+            /* Cleanup */
+            if (cur_list) free(cur_list);
+            if (id_list) free(id_list);
+            cur_len = 0;
+        }
+        /* Get i majority */
+        maj_id = get_majority(id_list_i, dist_mat[i]->count);
+        majority_list[i] = maj_id;
+        /* Cleanup */
+        free(id_list_i);
+    }
+
+    /* Get song index */
+    return_val = get_majority(majority_list, num_of_keys);
+    
+  out:
+    for (i = 0; i < num_of_keys; i++) {
+        if (dist_mat[i]) {
+            free(dist_mat[i]->data);
+            free(dist_mat[i]);
+        }
+    }
+    if (audio_data) free(audio_data);
+    return return_val;
 }

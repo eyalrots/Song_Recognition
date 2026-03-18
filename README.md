@@ -84,11 +84,28 @@ That way all the information lies in three data structures:
 - A list of all the unique line-keys -> $L$.
 - A list of lists each representing the information about each unique line-key -> $C$.
 
-## Step 2: Writing the code
-Now we got to the point where we understand the algorithm and how it works and all we have to do is implement it in code. The easiest way would be to do this in Python, but I'm not looking for the easy way. I'm looking for the fun and teachable way. That means C is the way to go!
-### - Creating the "linekeys"
-The first step in our journey to implementing this algorithm is to create the hart of it - the "linekey".
-In order to do that there are a few things we need to get done.
-The generation of a "linekey" takes a few steps, each one requires different functions and data types.
-- First we need to define the window sizes. Lets say that the sizes are the same as the paper. We would change them is needed.
-- Second we need to implement the hamming window function as well as import the FFTW library for FFT calculations.
+## Step 2: Rcognizing a song
+Now that we have defined the bulding blocks of a song in the database, we need to find the best match to the real-time recording.
+### Part 1 - Retrieving the data
+We will use 5 second recordings, meaning ~16 windows sized $300_{ms}$.
+Creating an array of these 16 linekeys by the same logic stated in `Step 1`, We now have to find a match.
+#### - How is data arranges?
+The data is in two files 
+1. One that contains the list of unique `linekeys' - $\mathcal{L}$.
+2. The other is the $\mathcal{C}$ file - a list of $(id, p)$ couples.
+
+#### - Getting the data
+We have thus a functions, that given a `linekey`-$\mathcal{L}_i$ , it returns a list of couples - $\mathcal{C}_i$.
+### Part 2 - Finding the best match
+Now that we have all related data to our real-time recording, we need to find the best match and *"Recognize"* the song.
+#### - Defining distance
+In order to find the closest match, we need to define what `close` actually mean.
+To do that we will define the distance between two `linekeys` to the `Hamming Distace` thus the maximum distance would be $B$.
+#### - Finding the match
+We will do this in two parts:
+1. For each LineKey in The recording:
+    * First we will find the closest distance $d_{min}$ out of existing `linekeys`.
+    * Then For each such `linekey` we get a list of `linekey information` - $(id,p)$ for all the `linekeys` at distance $d_{min}$ from it.
+2. Taking the majority vote:
+    * For each `linekey` $L_i$ in the recording we take out of the list we constructed (preciouos step) the song -$id$- that apears the most amount of times.
+    * Now we will have a list of songs, from them we will take again the majority.

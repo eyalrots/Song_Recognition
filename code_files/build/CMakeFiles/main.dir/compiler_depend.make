@@ -23,6 +23,7 @@ CMakeFiles/main.dir/src/database.c.o: /home/eyalrots/Documents/Projects/Song_Rec
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
   /usr/include/bits/thread-shared-types.h \
+  /usr/include/bits/time.h \
   /usr/include/bits/time64.h \
   /usr/include/bits/timesize.h \
   /usr/include/bits/types.h \
@@ -39,8 +40,10 @@ CMakeFiles/main.dir/src/database.c.o: /home/eyalrots/Documents/Projects/Song_Rec
   /usr/include/bits/types/locale_t.h \
   /usr/include/bits/types/sigset_t.h \
   /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/types/struct_itimerspec.h \
   /usr/include/bits/types/struct_timespec.h \
   /usr/include/bits/types/struct_timeval.h \
+  /usr/include/bits/types/struct_tm.h \
   /usr/include/bits/types/time_t.h \
   /usr/include/bits/types/timer_t.h \
   /usr/include/bits/typesizes.h \
@@ -64,6 +67,8 @@ CMakeFiles/main.dir/src/database.c.o: /home/eyalrots/Documents/Projects/Song_Rec
   /usr/include/sys/cdefs.h \
   /usr/include/sys/select.h \
   /usr/include/sys/types.h \
+  /usr/include/threads.h \
+  /usr/include/time.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h
@@ -255,8 +260,6 @@ CMakeFiles/main.dir/src/database.c.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/libgcc_s.so:
 
-/usr/lib/gcc/x86_64-redhat-linux/15/libgcc.a:
-
 /usr/lib64/libm.so:
 
 /usr/lib64/crt1.o:
@@ -297,9 +300,9 @@ CMakeFiles/main.dir/src/database.c.o:
 
 /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h:
 
-CMakeFiles/main.dir/src/func.c.o:
+/usr/include/time.h:
 
-/usr/include/sys/types.h:
+/usr/include/threads.h:
 
 /usr/include/sys/select.h:
 
@@ -309,13 +312,25 @@ CMakeFiles/main.dir/src/func.c.o:
 
 /usr/include/strings.h:
 
+/usr/include/stdlib.h:
+
 /usr/include/bits/types/FILE.h:
 
 /usr/include/bits/types.h:
 
+/usr/lib64/libc.so:
+
+/usr/include/string.h:
+
+/usr/include/bits/time64.h:
+
 /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h:
 
 /usr/include/bits/byteswap.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/15/libgcc.a:
+
+/usr/include/bits/time.h:
 
 /usr/include/bits/thread-shared-types.h:
 
@@ -337,10 +352,6 @@ CMakeFiles/main.dir/src/func.c.o:
 
 /usr/include/gnu/stubs-64.h:
 
-/usr/include/bits/wchar.h:
-
-/home/eyalrots/Documents/Projects/Song_Recognition/code_files/include/database.h:
-
 /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/database.c:
 
 /usr/lib64/crtn.o:
@@ -354,6 +365,12 @@ CMakeFiles/main.dir/src/func.c.o:
 /usr/include/bits/endian.h:
 
 /usr/include/bits/types/__sigset_t.h:
+
+CMakeFiles/main.dir/src/func.c.o:
+
+/usr/include/sys/types.h:
+
+/usr/include/bits/types/struct_itimerspec.h:
 
 /usr/include/bits/waitflags.h:
 
@@ -373,12 +390,6 @@ CMakeFiles/main.dir/src/func.c.o:
 
 /usr/include/bits/long-double.h:
 
-/usr/include/bits/math-vector.h:
-
-/usr/include/bits/types/__fpos_t.h:
-
-/usr/include/bits/wordsize.h:
-
 /usr/include/stdc-predef.h:
 
 /usr/include/bits/pthreadtypes-arch.h:
@@ -386,6 +397,12 @@ CMakeFiles/main.dir/src/func.c.o:
 /usr/include/bits/floatn.h:
 
 /usr/include/bits/pthreadtypes.h:
+
+/usr/include/bits/math-vector.h:
+
+/usr/include/bits/types/__fpos_t.h:
+
+/usr/include/bits/wordsize.h:
 
 /usr/include/bits/types/__locale_t.h:
 
@@ -396,12 +413,6 @@ CMakeFiles/main.dir/src/func.c.o:
 /usr/include/bits/uintn-identity.h:
 
 /usr/include/bits/typesizes.h:
-
-/usr/lib64/libc.so:
-
-/usr/include/bits/time64.h:
-
-/usr/include/string.h:
 
 /lib64/libc.so.6:
 
@@ -415,13 +426,21 @@ CMakeFiles/main.dir/src/func.c.o:
 
 /usr/include/bits/types/struct_timeval.h:
 
+/usr/include/bits/wchar.h:
+
+/home/eyalrots/Documents/Projects/Song_Recognition/code_files/include/database.h:
+
+/usr/include/bits/types/struct_tm.h:
+
 /usr/include/bits/mathcalls-helper-functions.h:
 
 /usr/include/bits/struct_rwlock.h:
 
 /usr/include/bits/types/time_t.h:
 
-/usr/include/stdlib.h:
+/usr/include/stdio.h:
+
+/usr/include/bits/types/timer_t.h:
 
 /usr/include/bits/stdint-uintn.h:
 
@@ -442,7 +461,3 @@ CMakeFiles/main.dir/src/func.c.o:
 /home/eyalrots/Documents/Projects/Song_Recognition/code_files/include/main.h:
 
 /usr/include/stdint.h:
-
-/usr/include/bits/types/timer_t.h:
-
-/usr/include/stdio.h:

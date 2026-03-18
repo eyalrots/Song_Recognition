@@ -10,6 +10,7 @@
 #include <fftw3.h>
 #include "database.h"
 
+/* Constants */
 #define SIGMA_WINDOW_LENGTH 300
 #define SUB_WINDOW_LENGTH   200
 #define STEP_LENGTH         100
@@ -20,7 +21,10 @@
 // linekey values
 #define LINEKEY_SIZE        64
 #define THRESHOLD_BIAS      3
+/* Recording */
+#define RECORD_DURATION     5
 
+/* Structures and Data Types */
 typedef struct wav_header {
     // RIFF Chunk Descriptor
     char     riff_header[4];        // "RIFF"
@@ -38,9 +42,18 @@ typedef struct wav_header {
     uint16_t bits_per_sample;       // 8, 16, 24, etc.
 } wav_header_t;
 
+typedef struct dynamic_list {
+    linekey_t *data;
+    int count;
+    int capacity; // How much we have alocated.
+} dynamic_list_t;
+
+/* Library Functions */
 int read_file(const char* input_file, unsigned char** out, long* size, wav_header_t* header);
+int read_and_convert(char *path_to_file, double **sample_output, wav_header_t *out_header, long *size);
 int convert_to_samples(unsigned char* data_buffer, double** sample_data, long* size, int bits_per_sample);
-int analyze_data(double* audio_data, const uint32_t data_size, wav_header_t header, int song_idx, linekey_t* unique_linekeys, int* unique_len);
-uint64_t convert_linekey_to_number(int* linekey);
 int new_linekey_generation(double* window_data, int sigma_size, int sub_size, int sample_rate, uint64_t* out_linekey);
+int anlyze_new_data(const double* audio_data, const int data_size, const wav_header_t header, const int song_idx);
+int recognize_recording(char *output_path);
+
 #endif
