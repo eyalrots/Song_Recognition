@@ -1,4 +1,6 @@
 #include "../include/func.h"
+#include <stdint.h>
+#include <stdio.h>
 
 int read_file(const char *input_file, unsigned char** out, long* size, wav_header_t* header) {
     unsigned char *data_buffer = NULL;
@@ -580,8 +582,8 @@ int recognize_recording(char *output_path) {
     long size;
 
     /* Analyze Variables */
-    int num_of_keys = RECORD_DURATION*1000 / SIGMA_WINDOW_LENGTH;
-    uint64_t rec_keys[num_of_keys];
+    int num_of_keys = (RECORD_DURATION*1000 - SIGMA_WINDOW_LENGTH) / STEP_LENGTH + 1;
+    uint64_t *rec_keys = malloc(num_of_keys * sizeof(uint64_t));
     int ms_size = 0;
     int sigma_size = 0;
     int sub_size = 0;
@@ -598,7 +600,11 @@ int recognize_recording(char *output_path) {
     /* Majority of mat[i] */
     int *id_list_i = NULL;
 
-    if (record_audio(output_path) < 0) return -1;
+    if (record_audio(output_path) < 0) {
+        fprintf(stderr, "Error: Could not record audio.\n");
+        free(rec_keys);
+        return -1;
+    }
 
     /* Read file */
     read_and_convert(output_path, &audio_data, &header, &size);
@@ -618,8 +624,8 @@ int recognize_recording(char *output_path) {
     }
 
     /* Check recording size */
-    if (size / ms_size >= RECORD_DURATION*1000) {
-        fprintf(stderr, "Error: Recording is longer than 5 seconds.\n");
+    if (size / ms_size >= RECORD_DURATION*1000 + 100) {
+        fprintf(stderr, "Error: Recording is longer than 5 seconds at %ld.\n", size / ms_size);
         return_val = -1;
         goto out;
     }
@@ -627,11 +633,13 @@ int recognize_recording(char *output_path) {
     /* Init distance matrix */
     for (i = 0; i < num_of_keys; i++) {
         dist_mat[i] = malloc(sizeof(dynamic_list_t));
-        memset(dist_mat[i], 0, sizeof(dynamic_list_t));
+        dist_mat[i]->count = 0;
+        dist_mat[i]->capacity = 0;
+        dist_mat[i]->data = NULL;
     }
 
     /* Window Calculations */
-    for (i = 0; i <= size-step_size; i += step_size) {
+    for (i = 0; i <= size-step_size && j < num_of_keys; i += step_size) {
         /* set current window */
         memcpy(cur_window, audio_data + i, sigma_size);
 
@@ -680,6 +688,7 @@ int recognize_recording(char *output_path) {
             free(dist_mat[i]);
         }
     }
+    free(rec_keys);
     if (audio_data) free(audio_data);
     return return_val;
 }
