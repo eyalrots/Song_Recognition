@@ -447,13 +447,13 @@ int read_and_convert(char *path_to_file, double **sample_output, wav_header_t *o
     return 0;
 }
 
-int record_audio(char *output_path) {
+int record_audio(char *output_path, const int duration) {
     int status = 0;
     char command[256];
     
     memset(command, 0, sizeof(command));
 
-    snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", RECORD_DURATION, output_path);
+    snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", duration, output_path);
 
     printf("Recording...\n");
 
@@ -600,7 +600,7 @@ int recognize_recording(char *output_path) {
     /* Majority of mat[i] */
     int *id_list_i = NULL;
 
-    if (record_audio(output_path) < 0) {
+    if (record_audio(output_path, RECORD_DURATION) < 0) {
         fprintf(stderr, "Error: Could not record audio.\n");
         free(rec_keys);
         return -1;

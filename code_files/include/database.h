@@ -10,8 +10,10 @@
 /* Constants */
 #define PATH_TO_L "../database/linekeys.bin"
 #define PATH_TO_C "../database/song_info.bin"
+#define PATH_TO_M "../database/metadata.bin"
 #define L_NAME "LKDB"
 #define C_NAME "CLDB"
+#define M_NAME "MDDB"
 
 /* Structures and Data Types */
 typedef struct linekey {
@@ -26,11 +28,19 @@ typedef struct linekey_info {
     uint32_t next_offset; // Offset to the next item on the list
 } linekey_info_t;
 
+typedef struct meta_data {
+    char name[128];
+    char album[64];
+    char artist[64];
+} meta_data_t;
+
 /* Library Funcitons */
 int new_linekey_entry(const uint64_t new_linekey, const int song_idx, const int position);
 int print_data(const char *name);
 int reset_database(void);
 int print_data(const char *name);
 int read_linekey_list(const uint64_t linekey, linekey_info_t **out_list, int *out_len);
+int insert_new_metadata(const meta_data_t *new_data);
+int retrieve_metadata(int idx, meta_data_t *data);
 
 #endif

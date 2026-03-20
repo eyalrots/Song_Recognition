@@ -55,5 +55,6 @@ int convert_to_samples(unsigned char* data_buffer, double** sample_data, long* s
 int new_linekey_generation(double* window_data, int sigma_size, int sub_size, int sample_rate, uint64_t* out_linekey);
 int anlyze_new_data(const double* audio_data, const int data_size, const wav_header_t header, const int song_idx);
 int recognize_recording(char *output_path);
+int record_audio(char *output_path, const int duration);
 
 #endif

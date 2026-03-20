@@ -166,12 +166,17 @@ void print_info(linekey_info_t info, int cur_loc) {
     printf("ID: %d :: Position: %d :: Next: %d :: Location in file: %d\n", info.id, info.p, info.next_offset, cur_loc);
 }
 
+void print_metadata(meta_data_t data) {
+    printf("name: %s\nalbum: %s\nartist: %s\n\n", data.name, data.album, data.artist);
+}
+
 int print_data(const char *name) {
     int return_val = 0;
     FILE *f = NULL;
     int type = 0; /* 0 -> linekey || 1 -> info */
-    linekey_t cur_linekey;
-    linekey_info_t cur_info;
+    linekey_t cur_linekey = {0};
+    linekey_info_t cur_info = {0};
+    meta_data_t cur_data = {0};
 
     if (!name) return -1;
     
@@ -190,18 +195,28 @@ int print_data(const char *name) {
             goto out;
         }
         type = 1;
+    } else if (!strncmp(name, M_NAME, sizeof(M_NAME))) {
+        f = fopen(PATH_TO_M, "rb");
+        if (!f) {
+            return_val = -1;
+            goto out;
+        }
+        type = 2;
     } else {
         return_val = -1;
         goto out;
     }
 
     /* Read File -> currently print */
-    if (type) {
+    if (type == 1) {
         while (fread(&cur_info, sizeof(cur_info), 1, f) == 1)
             print_info(cur_info, ftell(f) - sizeof(cur_info));
-    } else {
+    } else if (type == 0){
         while (fread(&cur_linekey, sizeof(cur_linekey), 1, f) == 1)
             print_linekey(cur_linekey);
+    } else {
+        while (fread(&cur_data, sizeof(cur_data), 1, f) == 1)
+            print_metadata(cur_data);
     }
 
   out:
@@ -220,6 +235,11 @@ int reset_database(void) {
     f = fopen(PATH_TO_C, "wb");
     if (!f) return -1;
     fclose(f);
+    f = NULL;
+    f = fopen(PATH_TO_M, "wb");
+    if (!f) return -1;
+    fclose(f);
+    f = NULL;
     return 0;
 }
 
@@ -280,4 +300,35 @@ int read_linekey_list(const uint64_t linekey, linekey_info_t **out_list, int *ou
     if (f) fclose(f);
     f = NULL;
     return return_val;
+}
+
+int insert_new_metadata(const meta_data_t *new_data) {
+    FILE *f = NULL;
+
+    f = fopen(PATH_TO_M, "ab+");
+    if (!f) return -1;
+
+    fwrite(new_data, sizeof(meta_data_t), 1, f);
+
+    if (f) fclose(f);
+    f = NULL;
+
+    return 0;
+}
+
+int retrieve_metadata(int idx, meta_data_t * data) {
+    FILE *f = NULL;
+
+    f = fopen(PATH_TO_M, "rb");
+    if (!f) return -1;
+
+    fseek(f, sizeof(meta_data_t) * (idx-1), SEEK_SET);
+
+    if (fread(data, sizeof(*data), 1, f) != 1)
+        return -1;
+
+    if (f) fclose(f);
+    f = NULL;
+
+    return 0;
 }

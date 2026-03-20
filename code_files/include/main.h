@@ -11,4 +11,6 @@
 #define PATH_TO_FILE_2 "../../sampled_audio/output.wav"
 #define PATH_TO_TEMP_RECORDING "/home/eyalrots/Documents/Projects/Song_Recognition/sampled_audio/recording.wav"
 
+#define NEW_SONGS_NUM 13
+
 #endif
