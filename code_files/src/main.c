@@ -19,14 +19,25 @@ int main() {
     // print_data(L_NAME);
     // printf("C file:\n");
     // print_data(C_NAME);
-
+    
     // meta_data_t data = {0};
-    // strcpy(data.name, "Love is a laser quest");
-    // strcpy(data.album, "Suck it and see");
+    // strcpy(data.name, "Black-Treacle");
+    // strcpy(data.album, "Suck-It-And-See");
     // strcpy(data.artist, "Arctic Monkeys");
     // insert_new_metadata(&data);
+    
+    
+    // char temp_record_path[1024];
+    // memset(temp_record_path, 0, sizeof(temp_record_path));
+    // snprintf(temp_record_path, sizeof(temp_record_path), "%s/%s/%s.wav", PATH_TO_SONG_FOLDER, data.album, data.name);
+    // /* Read raw file 1*/
+    // read_and_convert(temp_record_path, &audio_data, &header, &size);
+    
+    // anlyze_new_data(audio_data, size, header, 15);
+    
     // memset(&data, 0, sizeof(data));
-
+    // if (audio_data) free(audio_data);
+    // audio_data = NULL;
     // strcpy(data.name, "גשם חזק");
     // strcpy(data.album, "יחסים פתוחים");
     // strcpy(data.artist, "Monica Sex");
@@ -89,7 +100,6 @@ int main() {
     // "You-Probably-Couldnt-See-For-The-Lights-But-You-Were-Staring-Strait-At-Me"
     // };
 
-    // char temp_record_path[1024];
     // for (int i = 0; i < NEW_SONGS_NUM; i++) {
     //     memset(&(data.name), 0, sizeof(data.name));
     //     strcpy(data.name, song_names[i]);
@@ -97,11 +107,11 @@ int main() {
     //     /* Rewcord audio */
     //     memset(temp_record_path, 0, sizeof(temp_record_path));
     //     snprintf(temp_record_path, sizeof(temp_record_path), "%s/%s/%s.wav", PATH_TO_SONG_FOLDER, data.album, data.name);
-    //     //record_audio(temp_record_path, lengths[i]);
+    //     // record_audio(temp_record_path, lengths[i]);
     //     /* Read raw file 1*/
     //     read_and_convert(temp_record_path, &audio_data, &header, &size);
 
-    //     anlyze_new_data(audio_data, size, header, i+4);
+    //     anlyze_new_data(audio_data, size, header, i + 1);
 
     //     if (audio_data) free(audio_data);
     //     audio_data = NULL;

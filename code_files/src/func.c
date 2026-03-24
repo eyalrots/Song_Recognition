@@ -458,7 +458,7 @@ int record_audio(char *output_path, const int duration) {
     // snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", duration, output_path);
     snprintf(command, sizeof(command), 
          "ffmpeg -hide_banner -loglevel error -f alsa -i default -t %d -acodec pcm_s16le -ar 44100 -ac 1 -y %s", 
-         duration+1, output_path);
+         duration, output_path);
 
     printf("Recording...\n");
 
