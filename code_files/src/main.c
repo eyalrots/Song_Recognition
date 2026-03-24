@@ -39,24 +39,24 @@ int main() {
     // insert_new_metadata(&data);    
     // memset(&data, 0, sizeof(data));
     
-    // strcpy(data.album, "Whatever peaple say I am that's what I'm not");
+    // strcpy(data.album, "What-Ever-People-Say-I-Am-Thats-What-Im-Not");
     // strcpy(data.artist, "Arctic Monkeys");
 
-    // /* Expand Database loop */
+    /* Expand Database loop */
     // int lengths[NEW_SONGS_NUM] = {
-    //     222,
-    //     173,
-    //     177,
+    //     331,
     //     141,
-    //     130,
+    //     177,
+    //     193,
     //     173,
-    //     134,
-    //     143,
     //     175,
     //     268,
+    //     143,
+    //     134,
+    //     173,
+    //     218,
     //     202,
-    //     193,
-    //     331
+    //     190
     // };
     // char names[NEW_SONGS_NUM][128] = {
     //     "The View From The Afternoon",
@@ -73,15 +73,33 @@ int main() {
     //     "From The Ritz To The Rubble",
     //     "A Certain Romance"
     // };
+    // const char *song_names[] = {
+    // "A-Certain-Romance",
+    // "Dancing-Shoes",
+    // "Fake-Tales-Of-San-Francisco",
+    // "From-The-Ritz-To-The-Rubble",
+    // "I-Bet-You-Look-Good-On-The-Dancefloor",
+    // "Mardy-Bum",
+    // "Perhaps-Vampires-Is-A-Bit_Strong-But",
+    // "Red-Lights-Indicate-Doors-Are-Secured",
+    // "Riot-Van",
+    // "Still-Take-You-Home",
+    // "The-View-From-The-Afternoon",
+    // "When-The-Sun-Goes-Down",
+    // "You-Probably-Couldnt-See-For-The-Lights-But-You-Were-Staring-Strait-At-Me"
+    // };
 
+    // char temp_record_path[1024];
     // for (int i = 0; i < NEW_SONGS_NUM; i++) {
     //     memset(&(data.name), 0, sizeof(data.name));
-    //     strcpy(data.name, names[i]);
+    //     strcpy(data.name, song_names[i]);
     //     insert_new_metadata(&data);
     //     /* Rewcord audio */
-    //     record_audio(PATH_TO_FILE_1, lengths[i]);
+    //     memset(temp_record_path, 0, sizeof(temp_record_path));
+    //     snprintf(temp_record_path, sizeof(temp_record_path), "%s/%s/%s.wav", PATH_TO_SONG_FOLDER, data.album, data.name);
+    //     //record_audio(temp_record_path, lengths[i]);
     //     /* Read raw file 1*/
-    //     read_and_convert(PATH_TO_FILE_1, &audio_data, &header, &size);
+    //     read_and_convert(temp_record_path, &audio_data, &header, &size);
 
     //     anlyze_new_data(audio_data, size, header, i+4);
 

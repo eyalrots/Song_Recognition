@@ -104,6 +104,7 @@ CMakeFiles/main.dir/src/func.c.o: /home/eyalrots/Documents/Projects/Song_Recogni
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
   /usr/include/bits/thread-shared-types.h \
+  /usr/include/bits/time.h \
   /usr/include/bits/time64.h \
   /usr/include/bits/timesize.h \
   /usr/include/bits/types.h \
@@ -120,8 +121,10 @@ CMakeFiles/main.dir/src/func.c.o: /home/eyalrots/Documents/Projects/Song_Recogni
   /usr/include/bits/types/locale_t.h \
   /usr/include/bits/types/sigset_t.h \
   /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/types/struct_itimerspec.h \
   /usr/include/bits/types/struct_timespec.h \
   /usr/include/bits/types/struct_timeval.h \
+  /usr/include/bits/types/struct_tm.h \
   /usr/include/bits/types/time_t.h \
   /usr/include/bits/types/timer_t.h \
   /usr/include/bits/typesizes.h \
@@ -147,6 +150,8 @@ CMakeFiles/main.dir/src/func.c.o: /home/eyalrots/Documents/Projects/Song_Recogni
   /usr/include/sys/cdefs.h \
   /usr/include/sys/select.h \
   /usr/include/sys/types.h \
+  /usr/include/threads.h \
+  /usr/include/time.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h

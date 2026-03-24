@@ -44,4 +44,7 @@ CMakeFiles/main.dir/src/func.c.o: \
  /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/fftw3.h \
- /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/../include/database.h
+ /home/eyalrots/Documents/Projects/Song_Recognition/code_files/src/../include/database.h \
+ /usr/include/threads.h /usr/include/time.h /usr/include/bits/time.h \
+ /usr/include/bits/types/struct_tm.h \
+ /usr/include/bits/types/struct_itimerspec.h

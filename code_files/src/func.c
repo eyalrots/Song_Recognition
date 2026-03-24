@@ -1,12 +1,14 @@
 #include "../include/func.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <threads.h>
 
 int read_file(const char *input_file, unsigned char** out, long* size, wav_header_t* header) {
     unsigned char *data_buffer = NULL;
     FILE* wav_file = fopen(input_file, "rb");
 
     if (wav_file==NULL) {
+        printf("Error opening at path: %s\n", input_file);
         perror("Error opening file\n");
         return 1;
     }
@@ -453,7 +455,10 @@ int record_audio(char *output_path, const int duration) {
     
     memset(command, 0, sizeof(command));
 
-    snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", duration, output_path);
+    // snprintf(command, sizeof(command), "arecord -d %d -f S16_LE -r 44100 -c 1 %s", duration, output_path);
+    snprintf(command, sizeof(command), 
+         "ffmpeg -hide_banner -loglevel error -f alsa -i default -t %d -acodec pcm_s16le -ar 44100 -ac 1 -y %s", 
+         duration+1, output_path);
 
     printf("Recording...\n");
 
